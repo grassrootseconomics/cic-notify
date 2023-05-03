@@ -1,0 +1,47 @@
+[service]
+address = ":5000"
+# Exposes Go process Prometheus metrics
+# /metrics endpoint
+metrics = true
+
+[system]
+timezone = "Europe/Moscow"
+
+[chain]
+rpc_endpoint     = ""
+testnet          = true
+
+[system]
+private_key = ""
+public_key  = ""
+
+[at]
+# AfricasTalking config
+api_key        = ""
+username       = ""
+sandbox        = true
+short_code     = ""
+webhook_secret = "replacewitharandomlongstring"
+
+[tg]
+bot_token = ""
+
+[hasura]
+admin_secret = ""
+endpoint     = ""
+
+[postgres]
+dsn = ""
+
+[redis]
+min_idle_conn = 5
+
+[asynq]
+# Exclusively used by the asynq tasker
+# Ideally use DB 3
+dsn                = ""
+task_retention_hrs = 24
+worker_count       = 5
+
+[jetstream]
+endpoint = ""

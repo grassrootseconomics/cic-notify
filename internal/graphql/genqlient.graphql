@@ -1,0 +1,17 @@
+query PrepareMessagePayload($fromAddress: String!, $toAddress: String!, $voucherAddress: String!) {
+  accounts(where: {blockchain_address: {_in: [$fromAddress, $toAddress]}, account_type: {_in: [CUSTODIAL_SYSTEM, CUSTODIAL_BUSINESS, CUSTODIAL_PERSONAL, CUSTODIAL_COMMUNITY]}}) {
+    blockchain_address
+    account_type
+    user {
+      interface_type
+      interface_identifier
+      personal_information {
+        family_name
+        given_names
+      }
+    }
+  }
+  vouchers(where: {voucher_address: {_eq: $voucherAddress}}) {
+    symbol
+  }
+}
