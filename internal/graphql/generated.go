@@ -29,89 +29,171 @@ const (
 	Interface_type_enumUssd     Interface_type_enum = "USSD"
 )
 
-// PrepareMessagePayloadAccounts includes the requested fields of the GraphQL type accounts.
+// PrepareMessagePayloadReceiverAccounts includes the requested fields of the GraphQL type accounts.
 // The GraphQL type's documentation follows.
 //
 // columns and relationships of "accounts"
-type PrepareMessagePayloadAccounts struct {
+type PrepareMessagePayloadReceiverAccounts struct {
 	Blockchain_address string            `json:"blockchain_address"`
 	Account_type       Account_type_enum `json:"account_type"`
 	// An object relationship
-	User PrepareMessagePayloadAccountsUserUsers `json:"user"`
+	User PrepareMessagePayloadReceiverAccountsUserUsers `json:"user"`
 }
 
-// GetBlockchain_address returns PrepareMessagePayloadAccounts.Blockchain_address, and is useful for accessing the field via an interface.
-func (v *PrepareMessagePayloadAccounts) GetBlockchain_address() string { return v.Blockchain_address }
+// GetBlockchain_address returns PrepareMessagePayloadReceiverAccounts.Blockchain_address, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadReceiverAccounts) GetBlockchain_address() string {
+	return v.Blockchain_address
+}
 
-// GetAccount_type returns PrepareMessagePayloadAccounts.Account_type, and is useful for accessing the field via an interface.
-func (v *PrepareMessagePayloadAccounts) GetAccount_type() Account_type_enum { return v.Account_type }
+// GetAccount_type returns PrepareMessagePayloadReceiverAccounts.Account_type, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadReceiverAccounts) GetAccount_type() Account_type_enum {
+	return v.Account_type
+}
 
-// GetUser returns PrepareMessagePayloadAccounts.User, and is useful for accessing the field via an interface.
-func (v *PrepareMessagePayloadAccounts) GetUser() PrepareMessagePayloadAccountsUserUsers {
+// GetUser returns PrepareMessagePayloadReceiverAccounts.User, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadReceiverAccounts) GetUser() PrepareMessagePayloadReceiverAccountsUserUsers {
 	return v.User
 }
 
-// PrepareMessagePayloadAccountsUserUsers includes the requested fields of the GraphQL type users.
+// PrepareMessagePayloadReceiverAccountsUserUsers includes the requested fields of the GraphQL type users.
 // The GraphQL type's documentation follows.
 //
 // columns and relationships of "users"
-type PrepareMessagePayloadAccountsUserUsers struct {
+type PrepareMessagePayloadReceiverAccountsUserUsers struct {
 	Interface_type       Interface_type_enum `json:"interface_type"`
 	Interface_identifier string              `json:"interface_identifier"`
 	// An object relationship
-	Personal_information PrepareMessagePayloadAccountsUserUsersPersonal_information `json:"personal_information"`
+	Personal_information PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information `json:"personal_information"`
 }
 
-// GetInterface_type returns PrepareMessagePayloadAccountsUserUsers.Interface_type, and is useful for accessing the field via an interface.
-func (v *PrepareMessagePayloadAccountsUserUsers) GetInterface_type() Interface_type_enum {
+// GetInterface_type returns PrepareMessagePayloadReceiverAccountsUserUsers.Interface_type, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadReceiverAccountsUserUsers) GetInterface_type() Interface_type_enum {
 	return v.Interface_type
 }
 
-// GetInterface_identifier returns PrepareMessagePayloadAccountsUserUsers.Interface_identifier, and is useful for accessing the field via an interface.
-func (v *PrepareMessagePayloadAccountsUserUsers) GetInterface_identifier() string {
+// GetInterface_identifier returns PrepareMessagePayloadReceiverAccountsUserUsers.Interface_identifier, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadReceiverAccountsUserUsers) GetInterface_identifier() string {
 	return v.Interface_identifier
 }
 
-// GetPersonal_information returns PrepareMessagePayloadAccountsUserUsers.Personal_information, and is useful for accessing the field via an interface.
-func (v *PrepareMessagePayloadAccountsUserUsers) GetPersonal_information() PrepareMessagePayloadAccountsUserUsersPersonal_information {
+// GetPersonal_information returns PrepareMessagePayloadReceiverAccountsUserUsers.Personal_information, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadReceiverAccountsUserUsers) GetPersonal_information() PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information {
 	return v.Personal_information
 }
 
-// PrepareMessagePayloadAccountsUserUsersPersonal_information includes the requested fields of the GraphQL type personal_information.
+// PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information includes the requested fields of the GraphQL type personal_information.
 // The GraphQL type's documentation follows.
 //
 // columns and relationships of "personal_information"
-type PrepareMessagePayloadAccountsUserUsersPersonal_information struct {
+type PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information struct {
 	Family_name string `json:"family_name"`
 	Given_names string `json:"given_names"`
 }
 
-// GetFamily_name returns PrepareMessagePayloadAccountsUserUsersPersonal_information.Family_name, and is useful for accessing the field via an interface.
-func (v *PrepareMessagePayloadAccountsUserUsersPersonal_information) GetFamily_name() string {
+// GetFamily_name returns PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information.Family_name, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information) GetFamily_name() string {
 	return v.Family_name
 }
 
-// GetGiven_names returns PrepareMessagePayloadAccountsUserUsersPersonal_information.Given_names, and is useful for accessing the field via an interface.
-func (v *PrepareMessagePayloadAccountsUserUsersPersonal_information) GetGiven_names() string {
+// GetGiven_names returns PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information.Given_names, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information) GetGiven_names() string {
 	return v.Given_names
 }
 
 // PrepareMessagePayloadResponse is returned by PrepareMessagePayload on success.
 type PrepareMessagePayloadResponse struct {
 	// An array relationship
-	Accounts []PrepareMessagePayloadAccounts `json:"accounts"`
+	Sender []PrepareMessagePayloadSenderAccounts `json:"sender"`
+	// An array relationship
+	Receiver []PrepareMessagePayloadReceiverAccounts `json:"receiver"`
 	// fetch data from the table: "vouchers"
 	Vouchers []PrepareMessagePayloadVouchers `json:"vouchers"`
 }
 
-// GetAccounts returns PrepareMessagePayloadResponse.Accounts, and is useful for accessing the field via an interface.
-func (v *PrepareMessagePayloadResponse) GetAccounts() []PrepareMessagePayloadAccounts {
-	return v.Accounts
+// GetSender returns PrepareMessagePayloadResponse.Sender, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadResponse) GetSender() []PrepareMessagePayloadSenderAccounts {
+	return v.Sender
+}
+
+// GetReceiver returns PrepareMessagePayloadResponse.Receiver, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadResponse) GetReceiver() []PrepareMessagePayloadReceiverAccounts {
+	return v.Receiver
 }
 
 // GetVouchers returns PrepareMessagePayloadResponse.Vouchers, and is useful for accessing the field via an interface.
 func (v *PrepareMessagePayloadResponse) GetVouchers() []PrepareMessagePayloadVouchers {
 	return v.Vouchers
+}
+
+// PrepareMessagePayloadSenderAccounts includes the requested fields of the GraphQL type accounts.
+// The GraphQL type's documentation follows.
+//
+// columns and relationships of "accounts"
+type PrepareMessagePayloadSenderAccounts struct {
+	Blockchain_address string            `json:"blockchain_address"`
+	Account_type       Account_type_enum `json:"account_type"`
+	// An object relationship
+	User PrepareMessagePayloadSenderAccountsUserUsers `json:"user"`
+}
+
+// GetBlockchain_address returns PrepareMessagePayloadSenderAccounts.Blockchain_address, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadSenderAccounts) GetBlockchain_address() string {
+	return v.Blockchain_address
+}
+
+// GetAccount_type returns PrepareMessagePayloadSenderAccounts.Account_type, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadSenderAccounts) GetAccount_type() Account_type_enum {
+	return v.Account_type
+}
+
+// GetUser returns PrepareMessagePayloadSenderAccounts.User, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadSenderAccounts) GetUser() PrepareMessagePayloadSenderAccountsUserUsers {
+	return v.User
+}
+
+// PrepareMessagePayloadSenderAccountsUserUsers includes the requested fields of the GraphQL type users.
+// The GraphQL type's documentation follows.
+//
+// columns and relationships of "users"
+type PrepareMessagePayloadSenderAccountsUserUsers struct {
+	Interface_type       Interface_type_enum `json:"interface_type"`
+	Interface_identifier string              `json:"interface_identifier"`
+	// An object relationship
+	Personal_information PrepareMessagePayloadSenderAccountsUserUsersPersonal_information `json:"personal_information"`
+}
+
+// GetInterface_type returns PrepareMessagePayloadSenderAccountsUserUsers.Interface_type, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadSenderAccountsUserUsers) GetInterface_type() Interface_type_enum {
+	return v.Interface_type
+}
+
+// GetInterface_identifier returns PrepareMessagePayloadSenderAccountsUserUsers.Interface_identifier, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadSenderAccountsUserUsers) GetInterface_identifier() string {
+	return v.Interface_identifier
+}
+
+// GetPersonal_information returns PrepareMessagePayloadSenderAccountsUserUsers.Personal_information, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadSenderAccountsUserUsers) GetPersonal_information() PrepareMessagePayloadSenderAccountsUserUsersPersonal_information {
+	return v.Personal_information
+}
+
+// PrepareMessagePayloadSenderAccountsUserUsersPersonal_information includes the requested fields of the GraphQL type personal_information.
+// The GraphQL type's documentation follows.
+//
+// columns and relationships of "personal_information"
+type PrepareMessagePayloadSenderAccountsUserUsersPersonal_information struct {
+	Family_name string `json:"family_name"`
+	Given_names string `json:"given_names"`
+}
+
+// GetFamily_name returns PrepareMessagePayloadSenderAccountsUserUsersPersonal_information.Family_name, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadSenderAccountsUserUsersPersonal_information) GetFamily_name() string {
+	return v.Family_name
+}
+
+// GetGiven_names returns PrepareMessagePayloadSenderAccountsUserUsersPersonal_information.Given_names, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadSenderAccountsUserUsersPersonal_information) GetGiven_names() string {
+	return v.Given_names
 }
 
 // PrepareMessagePayloadVouchers includes the requested fields of the GraphQL type vouchers.
@@ -152,7 +234,19 @@ func PrepareMessagePayload(
 		OpName: "PrepareMessagePayload",
 		Query: `
 query PrepareMessagePayload ($fromAddress: String!, $toAddress: String!, $voucherAddress: String!) {
-	accounts(where: {blockchain_address:{_in:[$fromAddress,$toAddress]},account_type:{_in:[CUSTODIAL_SYSTEM,CUSTODIAL_BUSINESS,CUSTODIAL_PERSONAL,CUSTODIAL_COMMUNITY]}}) {
+	sender: accounts(where: {blockchain_address:{_eq:$fromAddress},account_type:{_in:[CUSTODIAL_SYSTEM,CUSTODIAL_BUSINESS,CUSTODIAL_PERSONAL,CUSTODIAL_COMMUNITY]}}) {
+		blockchain_address
+		account_type
+		user {
+			interface_type
+			interface_identifier
+			personal_information {
+				family_name
+				given_names
+			}
+		}
+	}
+	receiver: accounts(where: {blockchain_address:{_eq:$toAddress},account_type:{_in:[CUSTODIAL_SYSTEM,CUSTODIAL_BUSINESS,CUSTODIAL_PERSONAL,CUSTODIAL_COMMUNITY]}}) {
 		blockchain_address
 		account_type
 		user {

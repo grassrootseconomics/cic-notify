@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// WIP
 // Updates At receipt delivery status.
 // https://developers.africastalking.com/docs/sms/notifications
 func HandleAtDeliveryReport(s store.Store) func(echo.Context) error {

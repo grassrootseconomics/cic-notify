@@ -4,14 +4,14 @@
 -- $2: message_id
 INSERT INTO at_receipts(
     status_code,
-    message_id,
+    message_id
 ) VALUES($1, $2) RETURNING id
 
 --name: create-tg-receipt
 -- Create a new Telegram status receipt
 -- $2: message_id
 INSERT INTO tg_receipts(
-    message_id,
+    message_id
 ) VALUES($1) RETURNING id
 
 --name: set-at-delivered

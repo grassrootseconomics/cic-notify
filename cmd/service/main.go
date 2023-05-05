@@ -48,9 +48,7 @@ func main() {
 
 	celoProvider := initCeloProvider()
 	asynqRedisPool := initAsynqRedisPool()
-
-	parsedQueries := initQueries(queriesFlag)
-	store := initPgStore(parsedQueries)
+	store := initPgStore()
 
 	taskerClient := initTaskerClient(asynqRedisPool)
 
@@ -60,10 +58,11 @@ func main() {
 		AtApiKey:          ko.MustString("at.api_key"),
 		AtUsername:        ko.MustString("at.username"),
 		AtSandbox:         ko.Bool("at.sandbox"),
-		AtShortCode:       ko.MustString("at.short_code"),
+		AtShortCode:       ko.String("at.short_code"),
 		CeloProvider:      celoProvider,
 		HasuraAdminSecret: ko.MustString("hasura.admin_secret"),
 		HasuraEndpoint:    ko.MustString("hasura.endpoint"),
+		Logg:              lo,
 		Store:             store,
 		TaskerClient:      taskerClient,
 		TgBotToken:        ko.MustString("tg.bot_token"),

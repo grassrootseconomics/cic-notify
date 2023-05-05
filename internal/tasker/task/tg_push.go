@@ -30,6 +30,7 @@ func TgPushProcessor(n *notify.Notify) func(context.Context, *asynq.Task) error 
 		if err != nil {
 			return err
 		}
+		n.Logg.Info("tg_push_processor: TG push successful", "payload", payload.Message, "sent_to", payload.ChatId, "message_id", tgResponse.MessageID)
 
 		if err := n.Store.CreateTgReceipt(
 			ctx,

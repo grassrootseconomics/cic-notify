@@ -4,11 +4,11 @@ CREATE TABLE IF NOT EXISTS at_receipts (
     message_id TEXT NOT NULL,
     delivered BOOLEAN DEFAULT false,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 CREATE TABLE IF NOT EXISTS tg_receipts (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     message_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 

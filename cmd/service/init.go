@@ -109,11 +109,11 @@ func initQueries(queriesPath string) goyesql.Queries {
 }
 
 // Load Postgres store.
-func initPgStore(queries goyesql.Queries) store.Store {
-	store, err := store.NewPostgresStore(store.PostgresStoreOpts{
+func initPgStore() store.Store {
+	store, err := store.NewPgStore(store.Opts{
 		DSN:                  ko.MustString("postgres.dsn"),
 		MigrationsFolderPath: migrationsFolderFlag,
-		Queries:              queries,
+		QueriesFolderPath:    queriesFlag,
 	})
 	if err != nil {
 		lo.Fatal("init: critical error loading Postgres store", "error", err)

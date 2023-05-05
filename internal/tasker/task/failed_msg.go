@@ -6,7 +6,7 @@ import (
 
 	"github.com/grassrootseconomics/cic-notify/internal/graphql"
 	"github.com/grassrootseconomics/cic-notify/internal/notify"
-	"github.com/grassrootseconomics/cic-notify/internal/templates"
+	"github.com/grassrootseconomics/cic-notify/internal/template"
 	"github.com/hibiken/asynq"
 )
 
@@ -34,7 +34,7 @@ func FailedMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) err
 		}
 
 		msgPayload, err := n.TxNotifyTemplates.Prepare(
-			templates.FailedTemeplate,
+			template.FailedTemeplate,
 			templatePayload,
 		)
 		if err != nil {

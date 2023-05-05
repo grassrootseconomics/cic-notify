@@ -3,10 +3,7 @@ package task
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"strings"
 
-	"github.com/golang-module/carbon/v2"
 	"github.com/grassrootseconomics/cic-notify/internal/graphql"
 	"github.com/grassrootseconomics/cic-notify/internal/notify"
 	"github.com/grassrootseconomics/cic-notify/internal/tasker"
@@ -25,13 +22,13 @@ type chainEvent struct {
 	Value           uint64 `json:"value"`
 }
 
-// PrepareMsgProcessor will attempp to determine which kind of message should be prepared for sending.
-// It attempts to also support cross custodial non-custodial transfers.
-// It handles approx 4 scenarios:
-// 1. Failed transfer from a Custodial user
-// 2. Custodial -> Custodial transfer
-// 3. Non-custodial -> Custodial transfer
-// 4. Custodial -> Non-custodial transfer
+// PrepareMsgProcessor will determine which kind of message should be prepared for sending.
+// It also supports cross custodial - non-custodial transfer notifications.
+// It handles 4 scenarios:
+// 1. Failed transfer from a Custodial user -> Custodial/Non-custodial user.
+// 2. Custodial -> Custodial transfer.
+// 3. Non-custodial -> Custodial transfer.
+// 4. Custodial -> Non-custodial transfer.
 func PrepareMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) error {
 	return func(ctx context.Context, t *asynq.Task) error {
 		var (
@@ -56,17 +53,20 @@ func PrepareMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) er
 		// Check if any of the parties are registered in the GE graph realm.
 		// If not, we cannot proceed with any notification action.
 		// We additionally also check if the voucher is certified within the GE graph realm.
-		if len(resp.Accounts) < 1 || len(resp.Vouchers) < 1 {
+		// We only send notifications for certified vouchers.
+		if (len(resp.Receiver) < 1 && len(resp.Sender) < 1) || len(resp.Vouchers) < 1 {
+			n.Logg.Debug("prepare_msg_processor: dropping notification", "tx_hash", payload.TxHash)
 			return nil
 		}
 
-		// If the transfer failed on-chain, we only notify the transfer initiator.
+		// If the transfer failed on-chain, we only notify the transfer initiator/sender and stop further processing.
 		if !payload.Success {
-			if len(resp.Accounts) > 1 || resp.Accounts[0].Blockchain_address == payload.From {
+			n.Logg.Warn("prepare_msg_processor: on-chain failed transfer", "tx_hash", payload.TxHash, "payload", t.Payload())
+			if len(resp.Sender) > 0 {
 				failedMsgJobPayload, err := json.Marshal(failedMsg{
 					FailReason:        "Tx failed on chain",
-					ChannelType:       resp.Accounts[0].User.Interface_type,
-					ChannelIdentifier: resp.Accounts[0].User.Interface_identifier,
+					ChannelType:       resp.Sender[0].User.Interface_type,
+					ChannelIdentifier: resp.Sender[0].User.Interface_identifier,
 				})
 				if err != nil {
 					return nil
@@ -88,22 +88,35 @@ func PrepareMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) er
 			return nil
 		}
 
-		// If both parties are registered in the GE graph realm.
-		// The first party is always the sender, while the second one is the receiver.
-		if len(resp.Accounts) > 1 {
+		// If the sender is registered on the graph, we send them a message.
+		if len(resp.Sender) > 0 {
+			n.Logg.Debug("prepare_msg_processor: preparing msg for sender", "tx_hash", payload.TxHash)
+			var (
+				sentTo string
+			)
+
+			// We support sending messages when vouchers are sent to non-custodial/external users too.
+			if len(resp.Receiver) < 1 {
+				sentTo = formatIdentifier("", "", "", payload.To)
+			} else {
+				sentTo = formatIdentifier(
+					resp.Receiver[0].User.Personal_information.Given_names,
+					resp.Receiver[0].User.Personal_information.Family_name,
+					resp.Receiver[0].User.Interface_identifier,
+					resp.Receiver[0].Blockchain_address,
+				)
+			}
+
 			successSentMsgData := successSentMsg{
-				ShortHash:     formatShortHash(payload.TxHash),
-				TransferValue: payload.Value / 1000000,
-				VoucherSymbol: resp.Vouchers[0].Symbol,
-				SentTo: formatIdentifier(
-					resp.Accounts[1].User.Personal_information.Given_names,
-					resp.Accounts[1].User.Personal_information.Family_name,
-					resp.Accounts[1].User.Interface_identifier,
-					payload.To,
-				),
+				ShortHash:         formatShortHash(payload.TxHash),
+				TransferValue:     truncateVoucherValue(payload.Value),
+				VoucherSymbol:     resp.Vouchers[0].Symbol,
+				SentTo:            sentTo,
 				DateString:        formatDate(payload.Timestamp, n.Timezone),
-				ChannelType:       resp.Accounts[0].User.Interface_type,
-				ChannelIdentifier: resp.Accounts[0].User.Interface_identifier,
+				ChannelType:       resp.Sender[0].User.Interface_type,
+				ChannelIdentifier: resp.Sender[0].User.Interface_identifier,
+				BlockchainAddress: resp.Sender[0].Blockchain_address,
+				VoucherAddress:    payload.ContractAddress,
 			}
 
 			successSentJobPayload, err := json.Marshal(successSentMsgData)
@@ -122,20 +135,37 @@ func PrepareMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) er
 			if err != nil {
 				return err
 			}
+		}
+
+		// // If the receiver is registered on the graph, we send them a message from whom they received the vouchers from.
+		if len(resp.Receiver) > 0 {
+			n.Logg.Debug("prepare_msg_processor: preparing msg for receiver", "tx_hash", payload.TxHash)
+			var (
+				receivedFrom string
+			)
+
+			// We support sending messages when vouchers are received from non-custodial/external users too.
+			if len(resp.Sender) < 1 {
+				receivedFrom = formatIdentifier("", "", "", payload.From)
+			} else {
+				receivedFrom = formatIdentifier(
+					resp.Sender[0].User.Personal_information.Given_names,
+					resp.Sender[0].User.Personal_information.Family_name,
+					resp.Sender[0].User.Interface_identifier,
+					resp.Sender[0].Blockchain_address,
+				)
+			}
 
 			successReceivedMsgdata := successReceivedMsg{
-				ShortHash:     formatShortHash(payload.TxHash),
-				TransferValue: payload.Value / 1000000,
-				VoucherSymbol: resp.Vouchers[0].Symbol,
-				ReceivedFrom: formatIdentifier(
-					resp.Accounts[0].User.Personal_information.Given_names,
-					resp.Accounts[0].User.Personal_information.Family_name,
-					resp.Accounts[0].User.Interface_identifier,
-					payload.From,
-				),
+				ShortHash:         formatShortHash(payload.TxHash),
+				TransferValue:     truncateVoucherValue(payload.Value),
+				VoucherSymbol:     resp.Vouchers[0].Symbol,
+				ReceivedFrom:      receivedFrom,
 				DateString:        formatDate(payload.Timestamp, n.Timezone),
-				ChannelType:       resp.Accounts[1].User.Interface_type,
-				ChannelIdentifier: resp.Accounts[1].User.Interface_identifier,
+				ChannelType:       resp.Receiver[0].User.Interface_type,
+				ChannelIdentifier: resp.Receiver[0].User.Interface_identifier,
+				BlockchainAddress: resp.Receiver[0].Blockchain_address,
+				VoucherAddress:    payload.ContractAddress,
 			}
 
 			successReceivedJobPayload, err := json.Marshal(successReceivedMsgdata)
@@ -154,103 +184,9 @@ func PrepareMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) er
 			if err != nil {
 				return err
 			}
-		} else {
-			// We can only send a message to one party.
-			// We need to determine what kind of message we need to send.
-			if resp.Accounts[0].Blockchain_address == payload.To {
-				// A custodial user has received funds from a user outside the custodial system.
-				successReceivedMsgdata := successReceivedMsg{
-					ShortHash:     formatShortHash(payload.TxHash),
-					TransferValue: payload.Value / 1000000,
-					VoucherSymbol: resp.Vouchers[0].Symbol,
-					ReceivedFrom: formatIdentifier(
-						"",
-						"",
-						"",
-						payload.From,
-					),
-					DateString:        formatDate(payload.Timestamp, n.Timezone),
-					ChannelType:       resp.Accounts[1].User.Interface_type,
-					ChannelIdentifier: resp.Accounts[1].User.Interface_identifier,
-				}
-
-				successReceivedJobPayload, err := json.Marshal(successReceivedMsgdata)
-				if err != nil {
-					return nil
-				}
-
-				_, err = n.TaskerClient.CreateTask(
-					ctx,
-					tasker.ProcessSuccessReceivedMsgTask,
-					tasker.DefaultPriority,
-					&tasker.Task{
-						Payload: successReceivedJobPayload,
-					},
-				)
-				if err != nil {
-					return err
-				}
-			}
-
-			if resp.Accounts[0].Blockchain_address == payload.From {
-				// A custodial user had sent funds to a user outside the custodial system.
-				successSentMsgData := successSentMsg{
-					ShortHash:     formatShortHash(payload.TxHash),
-					TransferValue: payload.Value / 1000000,
-					VoucherSymbol: resp.Vouchers[0].Symbol,
-					SentTo: formatIdentifier(
-						"",
-						"",
-						"",
-						payload.To,
-					),
-					DateString:        formatDate(payload.Timestamp, n.Timezone),
-					ChannelType:       resp.Accounts[0].User.Interface_type,
-					ChannelIdentifier: resp.Accounts[0].User.Interface_identifier,
-				}
-
-				successSentJobPayload, err := json.Marshal(successSentMsgData)
-				if err != nil {
-					return nil
-				}
-
-				_, err = n.TaskerClient.CreateTask(
-					ctx,
-					tasker.ProcessSuccessSentMsgTask,
-					tasker.DefaultPriority,
-					&tasker.Task{
-						Payload: successSentJobPayload,
-					},
-				)
-				if err != nil {
-					return err
-				}
-			}
 		}
+		n.Logg.Info("prepare_msg_processor: processing chain event success", "tx_hash", payload.TxHash, "full_payload", t.Payload())
 
 		return nil
 	}
-}
-
-// formatDate takes a unix timestamp and timezone and returns a formatted string
-// 1649735755981 + Europe/Moscow
-// 2021-01-27 13:14:15
-func formatDate(unixTimestamp uint64, timeZone string) string {
-	return carbon.CreateFromTimestamp(int64(unixTimestamp)).SetTimezone(timeZone).ToDateTimeString()
-}
-
-// formatIdentifier takes the first name and last name and returns a formatted name string.
-func formatIdentifier(firstName string, lastName string, identifier string, blockchainAddress string) string {
-	if firstName != "" || lastName != "" {
-		return strings.ToUpper(strings.TrimSpace(fmt.Sprintf("%s %s %s", firstName, lastName, identifier)))
-	} else {
-		return blockchainAddress
-	}
-}
-
-// formatShortHash takes a full txHash and returns the last 8 chars of the Ethereum transaction hash (hex).
-// 0x1562767d2a01098da599cdea23ff798838a530a17e6072838c425d48.
-// Should return 7837424A.
-func formatShortHash(txHash string) string {
-	return strings.ToUpper(txHash[58:])
 }

@@ -4,12 +4,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"time"
 
+	"github.com/grassrootseconomics/cic-custodial/pkg/util"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/tern/v2/migrate"
 	"github.com/knadh/goyesql/v2"
-	"github.com/zerodha/logf"
 )
 
 const (
@@ -17,93 +16,90 @@ const (
 )
 
 type (
+	Store interface {
+		CreateAtReceipt(context.Context, uint, string) error
+		CreateTgReceipt(context.Context, int) error
+		SetAtDelivered(context.Context, string) error
+	}
+
+	Opts struct {
+		DSN                  string
+		MigrationsFolderPath string
+		QueriesFolderPath    string
+	}
+
+	PgStore struct {
+		db      *pgxpool.Pool
+		queries *queries
+	}
 	queries struct {
 		CreateAtReceipt string `query:"create-at-receipt"`
 		CreateTgReceipt string `query:"create-tg-receipt"`
 		SetAtDelivered  string `query:"set-at-delivered"`
 	}
-
-	PostgresStoreOpts struct {
-		DSN                  string
-		MigrationsFolderPath string
-		Logg                 logf.Logger
-		Queries              goyesql.Queries
-	}
-
-	PostgresStore struct {
-		logg    logf.Logger
-		pool    *pgxpool.Pool
-		queries queries
-	}
 )
 
-func NewPostgresStore(o PostgresStoreOpts) (Store, error) {
-	postgresStore := &PostgresStore{
-		logg: o.Logg,
-	}
-
-	if err := goyesql.ScanToStruct(&postgresStore.queries, o.Queries, nil); err != nil {
-		return nil, fmt.Errorf("failed to scan queries %v", err)
-	}
-
+func NewPgStore(o Opts) (Store, error) {
 	parsedConfig, err := pgxpool.ParseConfig(o.DSN)
 	if err != nil {
 		return nil, err
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	dbPool, err := pgxpool.NewWithConfig(ctx, parsedConfig)
+	dbPool, err := pgxpool.NewWithConfig(context.Background(), parsedConfig)
 	if err != nil {
 		return nil, err
 	}
+
+	queries, err := loadQueries(o.QueriesFolderPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := runMigrations(context.Background(), dbPool, o.MigrationsFolderPath); err != nil {
+		return nil, err
+	}
+
+	return &PgStore{
+		db:      dbPool,
+		queries: queries,
+	}, nil
+}
+
+func loadQueries(queriesPath string) (*queries, error) {
+	parsedQueries, err := goyesql.ParseFile(queriesPath)
+	if err != nil {
+		return nil, err
+	}
+
+	loadedQueries := &queries{}
+
+	if err := goyesql.ScanToStruct(loadedQueries, parsedQueries, nil); err != nil {
+		return nil, fmt.Errorf("failed to scan queries %v", err)
+	}
+
+	return loadedQueries, nil
+}
+
+func runMigrations(ctx context.Context, dbPool *pgxpool.Pool, migrationsPath string) error {
+	ctx, cancel := context.WithTimeout(ctx, util.SLATimeout)
+	defer cancel()
 
 	conn, err := dbPool.Acquire(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer conn.Release()
 
-	migrator, err := migrate.NewMigrator(ctx, conn.Conn(), schemaTable)
+	migrator, err := migrate.NewMigrator(ctx, conn.Conn(), "schema_version")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	if err := migrator.LoadMigrations(os.DirFS(o.MigrationsFolderPath)); err != nil {
-		return nil, err
+	if err := migrator.LoadMigrations(os.DirFS(migrationsPath)); err != nil {
+		return err
 	}
 
 	if err := migrator.Migrate(ctx); err != nil {
-		return nil, err
-	}
-
-	postgresStore.pool = dbPool
-
-	return postgresStore, nil
-}
-
-func (s *PostgresStore) CreateAtReceipt(ctx context.Context, statusCode uint, messageId string) error {
-	_, err := s.pool.Exec(ctx, s.queries.CreateAtReceipt, statusCode, messageId)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (s *PostgresStore) CreateTgReceipt(ctx context.Context, messageId int) error {
-	_, err := s.pool.Exec(ctx, s.queries.CreateTgReceipt, messageId)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (s *PostgresStore) SetAtDelivered(ctx context.Context, messageId string) error {
-	_, err := s.pool.Exec(ctx, s.queries.SetAtDelivered, messageId)
-	if err != nil {
 		return err
 	}
 

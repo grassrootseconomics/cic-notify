@@ -8,8 +8,9 @@ import (
 	hasura "github.com/grassrootseconomics/cic-notify/internal/graphql"
 	"github.com/grassrootseconomics/cic-notify/internal/store"
 	"github.com/grassrootseconomics/cic-notify/internal/tasker"
-	"github.com/grassrootseconomics/cic-notify/internal/templates"
+	"github.com/grassrootseconomics/cic-notify/internal/template"
 	"github.com/kamikazechaser/africastalking"
+	"github.com/zerodha/logf"
 )
 
 type (
@@ -21,6 +22,7 @@ type (
 		CeloProvider      *celoutils.Provider
 		HasuraAdminSecret string
 		HasuraEndpoint    string
+		Logg              logf.Logger
 		Store             store.Store
 		TaskerClient      *tasker.TaskerClient
 		TgBotToken        string
@@ -32,11 +34,12 @@ type (
 		AtShortCode       string
 		CeloProvider      *celoutils.Provider
 		GraphQLClient     graphql.Client
+		Logg              logf.Logger
 		Store             store.Store
 		TaskerClient      *tasker.TaskerClient
 		TgClient          *tgbotapi.BotAPI
 		Timezone          string
-		TxNotifyTemplates *templates.TxNotifyTemplates
+		TxNotifyTemplates *template.TxNotifyTemplates
 	}
 )
 
@@ -46,10 +49,11 @@ func New(o Opts) (*Notify, error) {
 		AtShortCode:       o.AtShortCode,
 		CeloProvider:      o.CeloProvider,
 		GraphQLClient:     hasura.NewHasuraGraphQLClient(o.HasuraAdminSecret, o.HasuraEndpoint),
+		Logg:              o.Logg,
 		Store:             o.Store,
 		TaskerClient:      o.TaskerClient,
 		Timezone:          carbon.Moscow,
-		TxNotifyTemplates: templates.LoadTemplates(),
+		TxNotifyTemplates: template.LoadTemplates(),
 	}
 
 	bot, err := tgbotapi.NewBotAPI(o.TgBotToken)

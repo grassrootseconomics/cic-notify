@@ -3,7 +3,7 @@ package task
 import "testing"
 
 func TestFormatDate(t *testing.T) {
-	expected := "2022-05-03 05:40:00"
+	expected := "2022-05-03 05:40"
 	result := formatDate(1651545600, "Europe/Moscow")
 	if result != expected {
 		t.Errorf("Expected %s, but got %s", expected, result)
@@ -33,6 +33,14 @@ func TestFormatIdentifier(t *testing.T) {
 func TestFormatShortHash(t *testing.T) {
 	expected := "40BC8DA2"
 	result := formatShortHash("0xc92eb48f99e5aa993dbe17b5f742f9a1aa6d57247796dfe8c9e99ba640bc8da2")
+	if result != expected {
+		t.Errorf("Expected %s, but got %s", expected, result)
+	}
+}
+
+func TestTruncateVoucherValue(t *testing.T) {
+	expected := "6.21"
+	result := truncateVoucherValue(6219000)
 	if result != expected {
 		t.Errorf("Expected %s, but got %s", expected, result)
 	}
