@@ -13,7 +13,7 @@ require (
 	github.com/grassrootseconomics/w3-celo-patch v0.2.0
 	github.com/hibiken/asynq v0.24.0
 	github.com/jackc/pgx/v5 v5.3.1
-	github.com/jackc/tern/v2 v2.0.1
+	github.com/jackc/tern/v2 v2.1.0
 	github.com/kamikazechaser/africastalking v0.2.0
 	github.com/knadh/goyesql/v2 v2.2.0
 	github.com/knadh/koanf/parsers/toml v0.1.0
@@ -22,6 +22,7 @@ require (
 	github.com/knadh/koanf/v2 v2.0.1
 	github.com/labstack/echo/v4 v4.10.2
 	github.com/nats-io/nats.go v1.25.0
+	github.com/redis/go-redis/v9 v9.0.3
 	github.com/zerodha/logf v0.5.5
 )
 
@@ -85,7 +86,6 @@ require (
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/tsdb v0.10.0 // indirect
-	github.com/redis/go-redis/v9 v9.0.3 // indirect
 	github.com/rivo/uniseg v0.4.3 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
