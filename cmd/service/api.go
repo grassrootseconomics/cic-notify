@@ -31,7 +31,7 @@ func initApiServer(store store.Store) *echo.Echo {
 	}
 
 	webhookRoute := server.Group("/webhook")
-	webhookRoute.POST(fmt.Sprint("/at/%s", ko.MustString("at.webhook_secret")), api.HandleAtDeliveryReport(store))
+	webhookRoute.POST(fmt.Sprintf("/at/%s", ko.MustString("at.webhook_secret")), api.HandleAtDeliveryReport(store))
 
 	return server
 }
