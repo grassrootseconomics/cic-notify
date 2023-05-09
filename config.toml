@@ -11,10 +11,6 @@ timezone = "Europe/Moscow"
 rpc_endpoint     = ""
 testnet          = true
 
-[system]
-private_key = ""
-public_key  = ""
-
 [at]
 # AfricasTalking config
 api_key        = ""
