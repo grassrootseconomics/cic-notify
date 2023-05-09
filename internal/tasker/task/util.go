@@ -11,6 +11,8 @@ import (
 
 const (
 	chainTokenDecimals = 6
+
+	passThruKey = "passthru"
 )
 
 var (

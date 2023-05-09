@@ -24,6 +24,15 @@ func TgPushProcessor(n *notify.Notify) func(context.Context, *asynq.Task) error 
 			return err
 		}
 
+		passThru, err := n.RedisClient.Get(ctx, passThruKey).Bool()
+		if err != nil {
+			return err
+		}
+
+		if passThru {
+			return nil
+		}
+
 		msg := tgbotapi.NewMessage(payload.ChatId, payload.Message)
 
 		tgResponse, err := n.TgClient.Send(msg)

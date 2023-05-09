@@ -10,6 +10,7 @@ import (
 	"github.com/grassrootseconomics/cic-notify/internal/tasker"
 	"github.com/grassrootseconomics/cic-notify/internal/template"
 	"github.com/kamikazechaser/africastalking"
+	"github.com/redis/go-redis/v9"
 	"github.com/zerodha/logf"
 )
 
@@ -23,6 +24,7 @@ type (
 		HasuraAdminSecret string
 		HasuraEndpoint    string
 		Logg              logf.Logger
+		RedisClient       *redis.Client
 		Store             store.Store
 		TaskerClient      *tasker.TaskerClient
 		TgBotToken        string
@@ -35,6 +37,7 @@ type (
 		CeloProvider      *celoutils.Provider
 		GraphQLClient     graphql.Client
 		Logg              logf.Logger
+		RedisClient       *redis.Client
 		Store             store.Store
 		TaskerClient      *tasker.TaskerClient
 		TgClient          *tgbotapi.BotAPI
@@ -50,6 +53,7 @@ func New(o Opts) (*Notify, error) {
 		CeloProvider:      o.CeloProvider,
 		GraphQLClient:     hasura.NewHasuraGraphQLClient(o.HasuraAdminSecret, o.HasuraEndpoint),
 		Logg:              o.Logg,
+		RedisClient:       o.RedisClient,
 		Store:             o.Store,
 		TaskerClient:      o.TaskerClient,
 		Timezone:          carbon.Moscow,

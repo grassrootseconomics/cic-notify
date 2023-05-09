@@ -14,7 +14,7 @@ type (
 
 const (
 	failedMsg          = "Failed. {{ .FailReason }}."
-	successReceivedMsg = "{{ .ShortHash }} Confirmed {{ .TransferValue }} {{ .VoucherSymbol }} received from {{ .ReceivedFrom }} {{ .DateString }} Balance is {{ .CurrentBalance }} {{ .VoucherSymbol }}"
+	successReceivedMsg = "{{ .ShortHash }} Confirmed {{ .TransferValue }} {{ .VoucherSymbol }} received from {{ .ReceivedFrom }} {{ .DateString }} Balance {{ .CurrentBalance }} {{ .VoucherSymbol }}"
 	successSentMsg     = "{{ .ShortHash }} Confirmed {{ .TransferValue }} {{ .VoucherSymbol }} sent to {{ .SentTo }} {{ .DateString }} Balance {{ .CurrentBalance }} {{ .VoucherSymbol }}"
 
 	FailedTemeplate         TemplateType = "failed"

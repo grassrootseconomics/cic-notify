@@ -63,6 +63,7 @@ func main() {
 		HasuraAdminSecret: ko.MustString("hasura.admin_secret"),
 		HasuraEndpoint:    ko.MustString("hasura.endpoint"),
 		Logg:              lo,
+		RedisClient:       asynqRedisPool.Client,
 		Store:             store,
 		TaskerClient:      taskerClient,
 		TgBotToken:        ko.MustString("tg.bot_token"),
