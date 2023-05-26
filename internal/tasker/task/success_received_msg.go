@@ -7,8 +7,8 @@ import (
 
 	"github.com/grassrootseconomics/celoutils"
 	"github.com/grassrootseconomics/cic-notify/internal/graphql"
+	"github.com/grassrootseconomics/cic-notify/internal/locale"
 	"github.com/grassrootseconomics/cic-notify/internal/notify"
-	"github.com/grassrootseconomics/cic-notify/internal/template"
 	"github.com/grassrootseconomics/w3-celo-patch/module/eth"
 	"github.com/hibiken/asynq"
 )
@@ -65,13 +65,12 @@ func SuccessReceivedMsgProcessor(n *notify.Notify) func(context.Context, *asynq.
 			truncateVoucherValue(balance.Uint64()),
 		}
 
-		msgPayload, err := n.TxNotifyTemplates.Prepare(
-			template.SuccessReceivedTemplate,
+		// TODO: Fetch language code from Graph.
+		msgPayload := n.Templates.PrepareLocale(
+			locale.SuccessReceivedTemplate,
+			"",
 			templatePayload,
 		)
-		if err != nil {
-			return err
-		}
 
 		if err := routeMessage(
 			ctx,

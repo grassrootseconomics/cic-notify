@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 
 	"github.com/grassrootseconomics/cic-notify/internal/graphql"
+	"github.com/grassrootseconomics/cic-notify/internal/locale"
 	"github.com/grassrootseconomics/cic-notify/internal/notify"
-	"github.com/grassrootseconomics/cic-notify/internal/template"
 	"github.com/hibiken/asynq"
 )
 
@@ -33,13 +33,12 @@ func FailedMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) err
 			FailReason: payload.FailReason,
 		}
 
-		msgPayload, err := n.TxNotifyTemplates.Prepare(
-			template.FailedTemeplate,
+		// TODO: Graph integration to fetch language code
+		msgPayload := n.Templates.PrepareLocale(
+			locale.FailedTemeplate,
+			"",
 			templatePayload,
 		)
-		if err != nil {
-			return err
-		}
 
 		if err := routeMessage(
 			ctx,
