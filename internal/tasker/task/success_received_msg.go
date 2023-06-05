@@ -68,7 +68,7 @@ func SuccessReceivedMsgProcessor(n *notify.Notify) func(context.Context, *asynq.
 
 		msgPayload := n.Templates.PrepareLocale(
 			locale.SuccessReceivedTemplate,
-			payload.Language,
+			"eng",
 			templatePayload,
 		)
 
