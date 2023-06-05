@@ -21,6 +21,7 @@ type (
 		AtSandbox         bool
 		AtShortCode       string
 		CeloProvider      *celoutils.Provider
+		DisablePush       bool
 		HasuraAdminSecret string
 		HasuraEndpoint    string
 		Logg              logf.Logger
@@ -35,6 +36,7 @@ type (
 		AtClient      *africastalking.AtClient
 		AtShortCode   string
 		CeloProvider  *celoutils.Provider
+		DisablePush   bool
 		GraphQLClient graphql.Client
 		Logg          logf.Logger
 		RedisClient   *redis.Client
@@ -56,6 +58,7 @@ func New(o Opts) (*Notify, error) {
 		AtClient:      africastalking.New(o.AtApiKey, o.AtUsername, o.AtSandbox),
 		AtShortCode:   o.AtShortCode,
 		CeloProvider:  o.CeloProvider,
+		DisablePush:   o.DisablePush,
 		GraphQLClient: hasura.NewHasuraGraphQLClient(o.HasuraAdminSecret, o.HasuraEndpoint),
 		Logg:          o.Logg,
 		RedisClient:   o.RedisClient,

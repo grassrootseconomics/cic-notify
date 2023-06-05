@@ -25,14 +25,10 @@ func AtPushProcessor(n *notify.Notify) func(context.Context, *asynq.Task) error 
 			return err
 		}
 
-		// passThru, err := n.RedisClient.Get(ctx, passThruKey).Bool()
-		// if err != nil {
-		// 	return fmt.Errorf("AT push, redis passthru fail: %v: %w", err, asynq.SkipRetry)
-		// }
-
-		// if passThru {
-		// 	return nil
-		// }
+		if n.DisablePush {
+			n.Logg.Info("at_push_processor: skipping push", "payload", payload.Message, "sent_to", payload.RecepientPhone)
+			return nil
+		}
 
 		msg := africastalking.BulkSMSInput{
 			From:    n.AtShortCode,

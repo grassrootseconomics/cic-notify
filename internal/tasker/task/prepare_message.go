@@ -67,6 +67,7 @@ func PrepareMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) er
 					FailReason:        "Tx failed on chain",
 					ChannelType:       resp.Sender[0].User.Interface_type,
 					ChannelIdentifier: resp.Sender[0].User.Interface_identifier,
+					Language:          resp.Sender[0].User.Personal_information.Language_code,
 				})
 				if err != nil {
 					return nil
@@ -115,6 +116,7 @@ func PrepareMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) er
 				DateString:        formatDate(payload.Timestamp, n.Timezone),
 				ChannelType:       resp.Sender[0].User.Interface_type,
 				ChannelIdentifier: resp.Sender[0].User.Interface_identifier,
+				Language:          resp.Sender[0].User.Personal_information.Language_code,
 				BlockchainAddress: resp.Sender[0].Blockchain_address,
 				VoucherAddress:    payload.ContractAddress,
 			}
@@ -164,6 +166,7 @@ func PrepareMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) er
 				DateString:        formatDate(payload.Timestamp, n.Timezone),
 				ChannelType:       resp.Receiver[0].User.Interface_type,
 				ChannelIdentifier: resp.Receiver[0].User.Interface_identifier,
+				Language:          resp.Sender[0].User.Personal_information.Language_code,
 				BlockchainAddress: resp.Receiver[0].Blockchain_address,
 				VoucherAddress:    payload.ContractAddress,
 			}

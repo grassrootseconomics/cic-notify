@@ -15,6 +15,7 @@ type failedMsg struct {
 	// These are passed to the channel provider e.g. AfricasTalking, Telegram, e.t.c.
 	ChannelType       graphql.Interface_type_enum
 	ChannelIdentifier string
+	Language          string
 }
 
 func FailedMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) error {
@@ -33,10 +34,9 @@ func FailedMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) err
 			FailReason: payload.FailReason,
 		}
 
-		// TODO: Graph integration to fetch language code
 		msgPayload := n.Templates.PrepareLocale(
 			locale.FailedTemeplate,
-			"",
+			payload.Language,
 			templatePayload,
 		)
 

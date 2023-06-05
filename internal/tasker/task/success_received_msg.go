@@ -22,6 +22,7 @@ type successReceivedMsg struct {
 	// These are passed to the channel provider e.g. AfricasTalking, Telegram, e.t.c.
 	ChannelType       graphql.Interface_type_enum
 	ChannelIdentifier string
+	Language          string
 	// These are used to update the balance value as it is on chain.
 	BlockchainAddress string
 	VoucherAddress    string
@@ -65,10 +66,9 @@ func SuccessReceivedMsgProcessor(n *notify.Notify) func(context.Context, *asynq.
 			truncateVoucherValue(balance.Uint64()),
 		}
 
-		// TODO: Fetch language code from Graph.
 		msgPayload := n.Templates.PrepareLocale(
 			locale.SuccessReceivedTemplate,
-			"",
+			payload.Language,
 			templatePayload,
 		)
 
