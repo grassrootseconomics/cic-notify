@@ -8,8 +8,8 @@ require (
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/golang-module/carbon/v2 v2.2.3
 	github.com/google/uuid v1.3.0
-	github.com/grassrootseconomics/celoutils v1.2.1
-	github.com/grassrootseconomics/cic-custodial v0.5.2-alpha
+	github.com/grassrootseconomics/celoutils v1.3.0
+	github.com/grassrootseconomics/cic-custodial v0.6.2-alpha
 	github.com/grassrootseconomics/w3-celo-patch v0.2.0
 	github.com/hibiken/asynq v0.24.0
 	github.com/jackc/pgx/v5 v5.3.1
@@ -23,7 +23,7 @@ require (
 	github.com/knadh/koanf/v2 v2.0.1
 	github.com/labstack/echo/v4 v4.10.2
 	github.com/nats-io/nats.go v1.25.0
-	github.com/redis/go-redis/v9 v9.0.3
+	github.com/redis/go-redis/v9 v9.0.4
 	github.com/zerodha/logf v0.5.5
 )
 
