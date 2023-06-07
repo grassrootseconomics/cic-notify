@@ -3,7 +3,7 @@ module github.com/grassrootseconomics/cic-notify
 go 1.20
 
 require (
-	github.com/Khan/genqlient v0.5.0
+	github.com/Khan/genqlient v0.6.0
 	github.com/VictoriaMetrics/metrics v1.23.1
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/golang-module/carbon/v2 v2.2.3
@@ -15,6 +15,7 @@ require (
 	github.com/jackc/pgx/v5 v5.3.1
 	github.com/jackc/tern/v2 v2.0.1
 	github.com/kamikazechaser/africastalking v0.2.0
+	github.com/kataras/i18n v0.0.8
 	github.com/knadh/goyesql/v2 v2.2.0
 	github.com/knadh/koanf/parsers/toml v0.1.0
 	github.com/knadh/koanf/providers/env v0.1.0
@@ -69,7 +70,6 @@ require (
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/puddle/v2 v2.2.0 // indirect
 	github.com/jackpal/go-nat-pmp v1.0.2 // indirect
-	github.com/kataras/i18n v0.0.8 // indirect
 	github.com/klauspost/compress v1.16.5 // indirect
 	github.com/knadh/koanf/maps v0.1.1 // indirect
 	github.com/labstack/gommon v0.4.0 // indirect
@@ -94,7 +94,6 @@ require (
 	github.com/shirou/gopsutil v3.21.11+incompatible // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
-	github.com/stretchr/testify v1.8.2 // indirect
 	github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7 // indirect
 	github.com/tklauser/go-sysconf v0.3.11 // indirect
 	github.com/tklauser/numcpus v0.6.0 // indirect
@@ -102,16 +101,16 @@ require (
 	github.com/valyala/fastrand v1.1.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	github.com/valyala/histogram v1.2.0 // indirect
-	github.com/vektah/gqlparser/v2 v2.4.5 // indirect
+	github.com/vektah/gqlparser/v2 v2.5.1 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	golang.org/x/crypto v0.8.0 // indirect
-	golang.org/x/mod v0.9.0 // indirect
+	golang.org/x/mod v0.10.0 // indirect
 	golang.org/x/net v0.9.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.7.0 // indirect
+	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
-	golang.org/x/tools v0.7.0 // indirect
+	golang.org/x/tools v0.8.0 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
