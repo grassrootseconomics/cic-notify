@@ -86,8 +86,9 @@ func (v *PrepareMessagePayloadReceiverAccountsUserUsers) GetPersonal_information
 //
 // columns and relationships of "personal_information"
 type PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information struct {
-	Family_name string `json:"family_name"`
-	Given_names string `json:"given_names"`
+	Family_name   string `json:"family_name"`
+	Given_names   string `json:"given_names"`
+	Language_code string `json:"language_code"`
 }
 
 // GetFamily_name returns PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information.Family_name, and is useful for accessing the field via an interface.
@@ -98,6 +99,11 @@ func (v *PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information) Get
 // GetGiven_names returns PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information.Given_names, and is useful for accessing the field via an interface.
 func (v *PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information) GetGiven_names() string {
 	return v.Given_names
+}
+
+// GetLanguage_code returns PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information.Language_code, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadReceiverAccountsUserUsersPersonal_information) GetLanguage_code() string {
+	return v.Language_code
 }
 
 // PrepareMessagePayloadResponse is returned by PrepareMessagePayload on success.
@@ -182,8 +188,9 @@ func (v *PrepareMessagePayloadSenderAccountsUserUsers) GetPersonal_information()
 //
 // columns and relationships of "personal_information"
 type PrepareMessagePayloadSenderAccountsUserUsersPersonal_information struct {
-	Family_name string `json:"family_name"`
-	Given_names string `json:"given_names"`
+	Family_name   string `json:"family_name"`
+	Given_names   string `json:"given_names"`
+	Language_code string `json:"language_code"`
 }
 
 // GetFamily_name returns PrepareMessagePayloadSenderAccountsUserUsersPersonal_information.Family_name, and is useful for accessing the field via an interface.
@@ -194,6 +201,11 @@ func (v *PrepareMessagePayloadSenderAccountsUserUsersPersonal_information) GetFa
 // GetGiven_names returns PrepareMessagePayloadSenderAccountsUserUsersPersonal_information.Given_names, and is useful for accessing the field via an interface.
 func (v *PrepareMessagePayloadSenderAccountsUserUsersPersonal_information) GetGiven_names() string {
 	return v.Given_names
+}
+
+// GetLanguage_code returns PrepareMessagePayloadSenderAccountsUserUsersPersonal_information.Language_code, and is useful for accessing the field via an interface.
+func (v *PrepareMessagePayloadSenderAccountsUserUsersPersonal_information) GetLanguage_code() string {
+	return v.Language_code
 }
 
 // PrepareMessagePayloadVouchers includes the requested fields of the GraphQL type vouchers.
@@ -243,6 +255,7 @@ query PrepareMessagePayload ($fromAddress: String!, $toAddress: String!, $vouche
 			personal_information {
 				family_name
 				given_names
+				language_code
 			}
 		}
 	}
@@ -255,6 +268,7 @@ query PrepareMessagePayload ($fromAddress: String!, $toAddress: String!, $vouche
 			personal_information {
 				family_name
 				given_names
+				language_code
 			}
 		}
 	}

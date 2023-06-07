@@ -398,7 +398,7 @@ type accounts {
   """An array relationship"""
   voucher_backers(
     """distinct select on columns"""
-    distinct_on: [voucher_backers_select_column!]
+    distinct_on: [voucher_issuers_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -407,16 +407,16 @@ type accounts {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [voucher_backers_order_by!]
+    order_by: [voucher_issuers_order_by!]
 
     """filter the rows returned"""
-    where: voucher_backers_bool_exp
-  ): [voucher_backers!]!
+    where: voucher_issuers_bool_exp
+  ): [voucher_issuers!]!
 
   """An aggregate relationship"""
   voucher_backers_aggregate(
     """distinct select on columns"""
-    distinct_on: [voucher_backers_select_column!]
+    distinct_on: [voucher_issuers_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -425,11 +425,11 @@ type accounts {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [voucher_backers_order_by!]
+    order_by: [voucher_issuers_order_by!]
 
     """filter the rows returned"""
-    where: voucher_backers_bool_exp
-  ): voucher_backers_aggregate!
+    where: voucher_issuers_bool_exp
+  ): voucher_issuers_aggregate!
 
   """An array relationship"""
   voucher_certifications(
@@ -600,8 +600,8 @@ input accounts_bool_exp {
   tills_aggregate: till_aggregate_bool_exp
   user: users_bool_exp
   user_identifier: Int_comparison_exp
-  voucher_backers: voucher_backers_bool_exp
-  voucher_backers_aggregate: voucher_backers_aggregate_bool_exp
+  voucher_backers: voucher_issuers_bool_exp
+  voucher_backers_aggregate: voucher_issuers_aggregate_bool_exp
   voucher_certifications: voucher_certifications_bool_exp
   voucher_certifications_aggregate: voucher_certifications_aggregate_bool_exp
   vpas: vpa_bool_exp
@@ -643,7 +643,7 @@ input accounts_insert_input {
   tills: till_arr_rel_insert_input
   user: users_obj_rel_insert_input
   user_identifier: Int
-  voucher_backers: voucher_backers_arr_rel_insert_input
+  voucher_backers: voucher_issuers_arr_rel_insert_input
   voucher_certifications: voucher_certifications_arr_rel_insert_input
   vpas: vpa_arr_rel_insert_input
 }
@@ -726,7 +726,7 @@ input accounts_order_by {
   tills_aggregate: till_aggregate_order_by
   user: users_order_by
   user_identifier: order_by
-  voucher_backers_aggregate: voucher_backers_aggregate_order_by
+  voucher_backers_aggregate: voucher_issuers_aggregate_order_by
   voucher_certifications_aggregate: voucher_certifications_aggregate_order_by
   vpas_aggregate: vpa_aggregate_order_by
 }
@@ -1857,19 +1857,6 @@ type mutation_root {
   delete_users_by_pk(id: Int!): users
 
   """
-  delete data from the table: "voucher_backers"
-  """
-  delete_voucher_backers(
-    """filter the rows which have to be deleted"""
-    where: voucher_backers_bool_exp!
-  ): voucher_backers_mutation_response
-
-  """
-  delete single row from the table: "voucher_backers"
-  """
-  delete_voucher_backers_by_pk(id: Int!): voucher_backers
-
-  """
   delete data from the table: "voucher_certifications"
   """
   delete_voucher_certifications(
@@ -1881,6 +1868,19 @@ type mutation_root {
   delete single row from the table: "voucher_certifications"
   """
   delete_voucher_certifications_by_pk(id: Int!): voucher_certifications
+
+  """
+  delete data from the table: "voucher_issuers"
+  """
+  delete_voucher_issuers(
+    """filter the rows which have to be deleted"""
+    where: voucher_issuers_bool_exp!
+  ): voucher_issuers_mutation_response
+
+  """
+  delete single row from the table: "voucher_issuers"
+  """
+  delete_voucher_issuers_by_pk(id: Int!): voucher_issuers
 
   """
   delete data from the table: "vouchers"
@@ -2239,28 +2239,6 @@ type mutation_root {
   ): users
 
   """
-  insert data into the table: "voucher_backers"
-  """
-  insert_voucher_backers(
-    """the rows to be inserted"""
-    objects: [voucher_backers_insert_input!]!
-
-    """upsert condition"""
-    on_conflict: voucher_backers_on_conflict
-  ): voucher_backers_mutation_response
-
-  """
-  insert a single row into the table: "voucher_backers"
-  """
-  insert_voucher_backers_one(
-    """the row to be inserted"""
-    object: voucher_backers_insert_input!
-
-    """upsert condition"""
-    on_conflict: voucher_backers_on_conflict
-  ): voucher_backers
-
-  """
   insert data into the table: "voucher_certifications"
   """
   insert_voucher_certifications(
@@ -2281,6 +2259,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: voucher_certifications_on_conflict
   ): voucher_certifications
+
+  """
+  insert data into the table: "voucher_issuers"
+  """
+  insert_voucher_issuers(
+    """the rows to be inserted"""
+    objects: [voucher_issuers_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: voucher_issuers_on_conflict
+  ): voucher_issuers_mutation_response
+
+  """
+  insert a single row into the table: "voucher_issuers"
+  """
+  insert_voucher_issuers_one(
+    """the row to be inserted"""
+    object: voucher_issuers_insert_input!
+
+    """upsert condition"""
+    on_conflict: voucher_issuers_on_conflict
+  ): voucher_issuers
 
   """
   insert data into the table: "vouchers"
@@ -2789,40 +2789,6 @@ type mutation_root {
   ): [users_mutation_response]
 
   """
-  update data of the table: "voucher_backers"
-  """
-  update_voucher_backers(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: voucher_backers_inc_input
-
-    """sets the columns of the filtered rows to the given values"""
-    _set: voucher_backers_set_input
-
-    """filter the rows which have to be updated"""
-    where: voucher_backers_bool_exp!
-  ): voucher_backers_mutation_response
-
-  """
-  update single row of the table: "voucher_backers"
-  """
-  update_voucher_backers_by_pk(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: voucher_backers_inc_input
-
-    """sets the columns of the filtered rows to the given values"""
-    _set: voucher_backers_set_input
-    pk_columns: voucher_backers_pk_columns_input!
-  ): voucher_backers
-
-  """
-  update multiples rows of table: "voucher_backers"
-  """
-  update_voucher_backers_many(
-    """updates to execute, in order"""
-    updates: [voucher_backers_updates!]!
-  ): [voucher_backers_mutation_response]
-
-  """
   update data of the table: "voucher_certifications"
   """
   update_voucher_certifications(
@@ -2855,6 +2821,40 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [voucher_certifications_updates!]!
   ): [voucher_certifications_mutation_response]
+
+  """
+  update data of the table: "voucher_issuers"
+  """
+  update_voucher_issuers(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: voucher_issuers_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: voucher_issuers_set_input
+
+    """filter the rows which have to be updated"""
+    where: voucher_issuers_bool_exp!
+  ): voucher_issuers_mutation_response
+
+  """
+  update single row of the table: "voucher_issuers"
+  """
+  update_voucher_issuers_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: voucher_issuers_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: voucher_issuers_set_input
+    pk_columns: voucher_issuers_pk_columns_input!
+  ): voucher_issuers
+
+  """
+  update multiples rows of table: "voucher_issuers"
+  """
+  update_voucher_issuers_many(
+    """updates to execute, in order"""
+    updates: [voucher_issuers_updates!]!
+  ): [voucher_issuers_mutation_response]
 
   """
   update data of the table: "vouchers"
@@ -2974,6 +2974,7 @@ type personal_information {
   gender_type: gender_type
   geo: point
   given_names: String
+  language_code: String
   location_name: String
 
   """An object relationship"""
@@ -3071,6 +3072,7 @@ input personal_information_bool_exp {
   gender_type: gender_type_bool_exp
   geo: point_comparison_exp
   given_names: String_comparison_exp
+  language_code: String_comparison_exp
   location_name: String_comparison_exp
   user: users_bool_exp
   user_identifier: Int_comparison_exp
@@ -3104,6 +3106,7 @@ input personal_information_insert_input {
   gender_type: gender_type_obj_rel_insert_input
   geo: point
   given_names: String
+  language_code: String
   location_name: String
   user: users_obj_rel_insert_input
   user_identifier: Int
@@ -3114,6 +3117,7 @@ input personal_information_insert_input {
 type personal_information_max_fields {
   family_name: String
   given_names: String
+  language_code: String
   location_name: String
   user_identifier: Int
   year_of_birth: Int
@@ -3125,6 +3129,7 @@ order by max() on columns of table "personal_information"
 input personal_information_max_order_by {
   family_name: order_by
   given_names: order_by
+  language_code: order_by
   location_name: order_by
   user_identifier: order_by
   year_of_birth: order_by
@@ -3134,6 +3139,7 @@ input personal_information_max_order_by {
 type personal_information_min_fields {
   family_name: String
   given_names: String
+  language_code: String
   location_name: String
   user_identifier: Int
   year_of_birth: Int
@@ -3145,6 +3151,7 @@ order by min() on columns of table "personal_information"
 input personal_information_min_order_by {
   family_name: order_by
   given_names: order_by
+  language_code: order_by
   location_name: order_by
   user_identifier: order_by
   year_of_birth: order_by
@@ -3187,6 +3194,7 @@ input personal_information_order_by {
   gender_type: gender_type_order_by
   geo: order_by
   given_names: order_by
+  language_code: order_by
   location_name: order_by
   user: users_order_by
   user_identifier: order_by
@@ -3210,6 +3218,9 @@ enum personal_information_select_column {
   given_names
 
   """column name"""
+  language_code
+
+  """column name"""
   location_name
 
   """column name"""
@@ -3227,6 +3238,7 @@ input personal_information_set_input {
   gender: gender_type_enum
   geo: point
   given_names: String
+  language_code: String
   location_name: String
   user_identifier: Int
   year_of_birth: Int
@@ -3291,6 +3303,7 @@ input personal_information_stream_cursor_value_input {
   gender: gender_type_enum
   geo: point
   given_names: String
+  language_code: String
   location_name: String
   user_identifier: Int
   year_of_birth: Int
@@ -3325,6 +3338,9 @@ enum personal_information_update_column {
 
   """column name"""
   given_names
+
+  """column name"""
+  language_code
 
   """column name"""
   location_name
@@ -4030,45 +4046,6 @@ type query_root {
   users_by_pk(id: Int!): users
 
   """An array relationship"""
-  voucher_backers(
-    """distinct select on columns"""
-    distinct_on: [voucher_backers_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [voucher_backers_order_by!]
-
-    """filter the rows returned"""
-    where: voucher_backers_bool_exp
-  ): [voucher_backers!]!
-
-  """An aggregate relationship"""
-  voucher_backers_aggregate(
-    """distinct select on columns"""
-    distinct_on: [voucher_backers_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [voucher_backers_order_by!]
-
-    """filter the rows returned"""
-    where: voucher_backers_bool_exp
-  ): voucher_backers_aggregate!
-
-  """fetch data from the table: "voucher_backers" using primary key columns"""
-  voucher_backers_by_pk(id: Int!): voucher_backers
-
-  """An array relationship"""
   voucher_certifications(
     """distinct select on columns"""
     distinct_on: [voucher_certifications_select_column!]
@@ -4108,6 +4085,49 @@ type query_root {
   fetch data from the table: "voucher_certifications" using primary key columns
   """
   voucher_certifications_by_pk(id: Int!): voucher_certifications
+
+  """
+  fetch data from the table: "voucher_issuers"
+  """
+  voucher_issuers(
+    """distinct select on columns"""
+    distinct_on: [voucher_issuers_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [voucher_issuers_order_by!]
+
+    """filter the rows returned"""
+    where: voucher_issuers_bool_exp
+  ): [voucher_issuers!]!
+
+  """
+  fetch aggregated fields from the table: "voucher_issuers"
+  """
+  voucher_issuers_aggregate(
+    """distinct select on columns"""
+    distinct_on: [voucher_issuers_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [voucher_issuers_order_by!]
+
+    """filter the rows returned"""
+    where: voucher_issuers_bool_exp
+  ): voucher_issuers_aggregate!
+
+  """fetch data from the table: "voucher_issuers" using primary key columns"""
+  voucher_issuers_by_pk(id: Int!): voucher_issuers
 
   """
   fetch data from the table: "vouchers"
@@ -7156,59 +7176,6 @@ type subscription_root {
   ): [users!]!
 
   """An array relationship"""
-  voucher_backers(
-    """distinct select on columns"""
-    distinct_on: [voucher_backers_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [voucher_backers_order_by!]
-
-    """filter the rows returned"""
-    where: voucher_backers_bool_exp
-  ): [voucher_backers!]!
-
-  """An aggregate relationship"""
-  voucher_backers_aggregate(
-    """distinct select on columns"""
-    distinct_on: [voucher_backers_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [voucher_backers_order_by!]
-
-    """filter the rows returned"""
-    where: voucher_backers_bool_exp
-  ): voucher_backers_aggregate!
-
-  """fetch data from the table: "voucher_backers" using primary key columns"""
-  voucher_backers_by_pk(id: Int!): voucher_backers
-
-  """
-  fetch data from the table in a streaming manner: "voucher_backers"
-  """
-  voucher_backers_stream(
-    """maximum number of rows returned in a single batch"""
-    batch_size: Int!
-
-    """cursor to stream the results returned by the query"""
-    cursor: [voucher_backers_stream_cursor_input]!
-
-    """filter the rows returned"""
-    where: voucher_backers_bool_exp
-  ): [voucher_backers!]!
-
-  """An array relationship"""
   voucher_certifications(
     """distinct select on columns"""
     distinct_on: [voucher_certifications_select_column!]
@@ -7262,6 +7229,63 @@ type subscription_root {
     """filter the rows returned"""
     where: voucher_certifications_bool_exp
   ): [voucher_certifications!]!
+
+  """
+  fetch data from the table: "voucher_issuers"
+  """
+  voucher_issuers(
+    """distinct select on columns"""
+    distinct_on: [voucher_issuers_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [voucher_issuers_order_by!]
+
+    """filter the rows returned"""
+    where: voucher_issuers_bool_exp
+  ): [voucher_issuers!]!
+
+  """
+  fetch aggregated fields from the table: "voucher_issuers"
+  """
+  voucher_issuers_aggregate(
+    """distinct select on columns"""
+    distinct_on: [voucher_issuers_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [voucher_issuers_order_by!]
+
+    """filter the rows returned"""
+    where: voucher_issuers_bool_exp
+  ): voucher_issuers_aggregate!
+
+  """fetch data from the table: "voucher_issuers" using primary key columns"""
+  voucher_issuers_by_pk(id: Int!): voucher_issuers
+
+  """
+  fetch data from the table in a streaming manner: "voucher_issuers"
+  """
+  voucher_issuers_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [voucher_issuers_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: voucher_issuers_bool_exp
+  ): [voucher_issuers!]!
 
   """
   fetch data from the table: "vouchers"
@@ -8966,441 +8990,6 @@ input users_variance_order_by {
 }
 
 """
-columns and relationships of "voucher_backers"
-"""
-type voucher_backers {
-  """An object relationship"""
-  account: accounts!
-  active: Boolean
-  backer: Int!
-  created_at: timestamp!
-  id: Int!
-  voucher: Int!
-
-  """An object relationship"""
-  voucherByVoucher: vouchers!
-}
-
-"""
-aggregated selection of "voucher_backers"
-"""
-type voucher_backers_aggregate {
-  aggregate: voucher_backers_aggregate_fields
-  nodes: [voucher_backers!]!
-}
-
-input voucher_backers_aggregate_bool_exp {
-  bool_and: voucher_backers_aggregate_bool_exp_bool_and
-  bool_or: voucher_backers_aggregate_bool_exp_bool_or
-  count: voucher_backers_aggregate_bool_exp_count
-}
-
-input voucher_backers_aggregate_bool_exp_bool_and {
-  arguments: voucher_backers_select_column_voucher_backers_aggregate_bool_exp_bool_and_arguments_columns!
-  distinct: Boolean
-  filter: voucher_backers_bool_exp
-  predicate: Boolean_comparison_exp!
-}
-
-input voucher_backers_aggregate_bool_exp_bool_or {
-  arguments: voucher_backers_select_column_voucher_backers_aggregate_bool_exp_bool_or_arguments_columns!
-  distinct: Boolean
-  filter: voucher_backers_bool_exp
-  predicate: Boolean_comparison_exp!
-}
-
-input voucher_backers_aggregate_bool_exp_count {
-  arguments: [voucher_backers_select_column!]
-  distinct: Boolean
-  filter: voucher_backers_bool_exp
-  predicate: Int_comparison_exp!
-}
-
-"""
-aggregate fields of "voucher_backers"
-"""
-type voucher_backers_aggregate_fields {
-  avg: voucher_backers_avg_fields
-  count(columns: [voucher_backers_select_column!], distinct: Boolean): Int!
-  max: voucher_backers_max_fields
-  min: voucher_backers_min_fields
-  stddev: voucher_backers_stddev_fields
-  stddev_pop: voucher_backers_stddev_pop_fields
-  stddev_samp: voucher_backers_stddev_samp_fields
-  sum: voucher_backers_sum_fields
-  var_pop: voucher_backers_var_pop_fields
-  var_samp: voucher_backers_var_samp_fields
-  variance: voucher_backers_variance_fields
-}
-
-"""
-order by aggregate values of table "voucher_backers"
-"""
-input voucher_backers_aggregate_order_by {
-  avg: voucher_backers_avg_order_by
-  count: order_by
-  max: voucher_backers_max_order_by
-  min: voucher_backers_min_order_by
-  stddev: voucher_backers_stddev_order_by
-  stddev_pop: voucher_backers_stddev_pop_order_by
-  stddev_samp: voucher_backers_stddev_samp_order_by
-  sum: voucher_backers_sum_order_by
-  var_pop: voucher_backers_var_pop_order_by
-  var_samp: voucher_backers_var_samp_order_by
-  variance: voucher_backers_variance_order_by
-}
-
-"""
-input type for inserting array relation for remote table "voucher_backers"
-"""
-input voucher_backers_arr_rel_insert_input {
-  data: [voucher_backers_insert_input!]!
-
-  """upsert condition"""
-  on_conflict: voucher_backers_on_conflict
-}
-
-"""aggregate avg on columns"""
-type voucher_backers_avg_fields {
-  backer: Float
-  id: Float
-  voucher: Float
-}
-
-"""
-order by avg() on columns of table "voucher_backers"
-"""
-input voucher_backers_avg_order_by {
-  backer: order_by
-  id: order_by
-  voucher: order_by
-}
-
-"""
-Boolean expression to filter rows from the table "voucher_backers". All fields are combined with a logical 'AND'.
-"""
-input voucher_backers_bool_exp {
-  _and: [voucher_backers_bool_exp!]
-  _not: voucher_backers_bool_exp
-  _or: [voucher_backers_bool_exp!]
-  account: accounts_bool_exp
-  active: Boolean_comparison_exp
-  backer: Int_comparison_exp
-  created_at: timestamp_comparison_exp
-  id: Int_comparison_exp
-  voucher: Int_comparison_exp
-  voucherByVoucher: vouchers_bool_exp
-}
-
-"""
-unique or primary key constraints on table "voucher_backers"
-"""
-enum voucher_backers_constraint {
-  """
-  unique or primary key constraint on columns "id"
-  """
-  voucher_backers_pkey
-}
-
-"""
-input type for incrementing numeric columns in table "voucher_backers"
-"""
-input voucher_backers_inc_input {
-  backer: Int
-  voucher: Int
-}
-
-"""
-input type for inserting data into table "voucher_backers"
-"""
-input voucher_backers_insert_input {
-  account: accounts_obj_rel_insert_input
-  active: Boolean
-  backer: Int
-  created_at: timestamp
-  voucher: Int
-  voucherByVoucher: vouchers_obj_rel_insert_input
-}
-
-"""aggregate max on columns"""
-type voucher_backers_max_fields {
-  backer: Int
-  created_at: timestamp
-  id: Int
-  voucher: Int
-}
-
-"""
-order by max() on columns of table "voucher_backers"
-"""
-input voucher_backers_max_order_by {
-  backer: order_by
-  created_at: order_by
-  id: order_by
-  voucher: order_by
-}
-
-"""aggregate min on columns"""
-type voucher_backers_min_fields {
-  backer: Int
-  created_at: timestamp
-  id: Int
-  voucher: Int
-}
-
-"""
-order by min() on columns of table "voucher_backers"
-"""
-input voucher_backers_min_order_by {
-  backer: order_by
-  created_at: order_by
-  id: order_by
-  voucher: order_by
-}
-
-"""
-response of any mutation on the table "voucher_backers"
-"""
-type voucher_backers_mutation_response {
-  """number of rows affected by the mutation"""
-  affected_rows: Int!
-
-  """data from the rows affected by the mutation"""
-  returning: [voucher_backers!]!
-}
-
-"""
-on_conflict condition type for table "voucher_backers"
-"""
-input voucher_backers_on_conflict {
-  constraint: voucher_backers_constraint!
-  update_columns: [voucher_backers_update_column!]! = []
-  where: voucher_backers_bool_exp
-}
-
-"""Ordering options when selecting data from "voucher_backers"."""
-input voucher_backers_order_by {
-  account: accounts_order_by
-  active: order_by
-  backer: order_by
-  created_at: order_by
-  id: order_by
-  voucher: order_by
-  voucherByVoucher: vouchers_order_by
-}
-
-"""primary key columns input for table: voucher_backers"""
-input voucher_backers_pk_columns_input {
-  id: Int!
-}
-
-"""
-select columns of table "voucher_backers"
-"""
-enum voucher_backers_select_column {
-  """column name"""
-  active
-
-  """column name"""
-  backer
-
-  """column name"""
-  created_at
-
-  """column name"""
-  id
-
-  """column name"""
-  voucher
-}
-
-"""
-select "voucher_backers_aggregate_bool_exp_bool_and_arguments_columns" columns of table "voucher_backers"
-"""
-enum voucher_backers_select_column_voucher_backers_aggregate_bool_exp_bool_and_arguments_columns {
-  """column name"""
-  active
-}
-
-"""
-select "voucher_backers_aggregate_bool_exp_bool_or_arguments_columns" columns of table "voucher_backers"
-"""
-enum voucher_backers_select_column_voucher_backers_aggregate_bool_exp_bool_or_arguments_columns {
-  """column name"""
-  active
-}
-
-"""
-input type for updating data in table "voucher_backers"
-"""
-input voucher_backers_set_input {
-  active: Boolean
-  backer: Int
-  created_at: timestamp
-  voucher: Int
-}
-
-"""aggregate stddev on columns"""
-type voucher_backers_stddev_fields {
-  backer: Float
-  id: Float
-  voucher: Float
-}
-
-"""
-order by stddev() on columns of table "voucher_backers"
-"""
-input voucher_backers_stddev_order_by {
-  backer: order_by
-  id: order_by
-  voucher: order_by
-}
-
-"""aggregate stddev_pop on columns"""
-type voucher_backers_stddev_pop_fields {
-  backer: Float
-  id: Float
-  voucher: Float
-}
-
-"""
-order by stddev_pop() on columns of table "voucher_backers"
-"""
-input voucher_backers_stddev_pop_order_by {
-  backer: order_by
-  id: order_by
-  voucher: order_by
-}
-
-"""aggregate stddev_samp on columns"""
-type voucher_backers_stddev_samp_fields {
-  backer: Float
-  id: Float
-  voucher: Float
-}
-
-"""
-order by stddev_samp() on columns of table "voucher_backers"
-"""
-input voucher_backers_stddev_samp_order_by {
-  backer: order_by
-  id: order_by
-  voucher: order_by
-}
-
-"""
-Streaming cursor of the table "voucher_backers"
-"""
-input voucher_backers_stream_cursor_input {
-  """Stream column input with initial value"""
-  initial_value: voucher_backers_stream_cursor_value_input!
-
-  """cursor ordering"""
-  ordering: cursor_ordering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input voucher_backers_stream_cursor_value_input {
-  active: Boolean
-  backer: Int
-  created_at: timestamp
-  id: Int
-  voucher: Int
-}
-
-"""aggregate sum on columns"""
-type voucher_backers_sum_fields {
-  backer: Int
-  id: Int
-  voucher: Int
-}
-
-"""
-order by sum() on columns of table "voucher_backers"
-"""
-input voucher_backers_sum_order_by {
-  backer: order_by
-  id: order_by
-  voucher: order_by
-}
-
-"""
-update columns of table "voucher_backers"
-"""
-enum voucher_backers_update_column {
-  """column name"""
-  active
-
-  """column name"""
-  backer
-
-  """column name"""
-  created_at
-
-  """column name"""
-  voucher
-}
-
-input voucher_backers_updates {
-  """increments the numeric columns with given value of the filtered values"""
-  _inc: voucher_backers_inc_input
-
-  """sets the columns of the filtered rows to the given values"""
-  _set: voucher_backers_set_input
-
-  """filter the rows which have to be updated"""
-  where: voucher_backers_bool_exp!
-}
-
-"""aggregate var_pop on columns"""
-type voucher_backers_var_pop_fields {
-  backer: Float
-  id: Float
-  voucher: Float
-}
-
-"""
-order by var_pop() on columns of table "voucher_backers"
-"""
-input voucher_backers_var_pop_order_by {
-  backer: order_by
-  id: order_by
-  voucher: order_by
-}
-
-"""aggregate var_samp on columns"""
-type voucher_backers_var_samp_fields {
-  backer: Float
-  id: Float
-  voucher: Float
-}
-
-"""
-order by var_samp() on columns of table "voucher_backers"
-"""
-input voucher_backers_var_samp_order_by {
-  backer: order_by
-  id: order_by
-  voucher: order_by
-}
-
-"""aggregate variance on columns"""
-type voucher_backers_variance_fields {
-  backer: Float
-  id: Float
-  voucher: Float
-}
-
-"""
-order by variance() on columns of table "voucher_backers"
-"""
-input voucher_backers_variance_order_by {
-  backer: order_by
-  id: order_by
-  voucher: order_by
-}
-
-"""
 columns and relationships of "voucher_certifications"
 """
 type voucher_certifications {
@@ -9841,6 +9430,441 @@ input voucher_certifications_variance_order_by {
 }
 
 """
+columns and relationships of "voucher_issuers"
+"""
+type voucher_issuers {
+  """An object relationship"""
+  account: accounts!
+  active: Boolean
+  backer: Int!
+  created_at: timestamp!
+  id: Int!
+  voucher: Int!
+
+  """An object relationship"""
+  voucherByVoucher: vouchers!
+}
+
+"""
+aggregated selection of "voucher_issuers"
+"""
+type voucher_issuers_aggregate {
+  aggregate: voucher_issuers_aggregate_fields
+  nodes: [voucher_issuers!]!
+}
+
+input voucher_issuers_aggregate_bool_exp {
+  bool_and: voucher_issuers_aggregate_bool_exp_bool_and
+  bool_or: voucher_issuers_aggregate_bool_exp_bool_or
+  count: voucher_issuers_aggregate_bool_exp_count
+}
+
+input voucher_issuers_aggregate_bool_exp_bool_and {
+  arguments: voucher_issuers_select_column_voucher_issuers_aggregate_bool_exp_bool_and_arguments_columns!
+  distinct: Boolean
+  filter: voucher_issuers_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input voucher_issuers_aggregate_bool_exp_bool_or {
+  arguments: voucher_issuers_select_column_voucher_issuers_aggregate_bool_exp_bool_or_arguments_columns!
+  distinct: Boolean
+  filter: voucher_issuers_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input voucher_issuers_aggregate_bool_exp_count {
+  arguments: [voucher_issuers_select_column!]
+  distinct: Boolean
+  filter: voucher_issuers_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "voucher_issuers"
+"""
+type voucher_issuers_aggregate_fields {
+  avg: voucher_issuers_avg_fields
+  count(columns: [voucher_issuers_select_column!], distinct: Boolean): Int!
+  max: voucher_issuers_max_fields
+  min: voucher_issuers_min_fields
+  stddev: voucher_issuers_stddev_fields
+  stddev_pop: voucher_issuers_stddev_pop_fields
+  stddev_samp: voucher_issuers_stddev_samp_fields
+  sum: voucher_issuers_sum_fields
+  var_pop: voucher_issuers_var_pop_fields
+  var_samp: voucher_issuers_var_samp_fields
+  variance: voucher_issuers_variance_fields
+}
+
+"""
+order by aggregate values of table "voucher_issuers"
+"""
+input voucher_issuers_aggregate_order_by {
+  avg: voucher_issuers_avg_order_by
+  count: order_by
+  max: voucher_issuers_max_order_by
+  min: voucher_issuers_min_order_by
+  stddev: voucher_issuers_stddev_order_by
+  stddev_pop: voucher_issuers_stddev_pop_order_by
+  stddev_samp: voucher_issuers_stddev_samp_order_by
+  sum: voucher_issuers_sum_order_by
+  var_pop: voucher_issuers_var_pop_order_by
+  var_samp: voucher_issuers_var_samp_order_by
+  variance: voucher_issuers_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "voucher_issuers"
+"""
+input voucher_issuers_arr_rel_insert_input {
+  data: [voucher_issuers_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: voucher_issuers_on_conflict
+}
+
+"""aggregate avg on columns"""
+type voucher_issuers_avg_fields {
+  backer: Float
+  id: Float
+  voucher: Float
+}
+
+"""
+order by avg() on columns of table "voucher_issuers"
+"""
+input voucher_issuers_avg_order_by {
+  backer: order_by
+  id: order_by
+  voucher: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "voucher_issuers". All fields are combined with a logical 'AND'.
+"""
+input voucher_issuers_bool_exp {
+  _and: [voucher_issuers_bool_exp!]
+  _not: voucher_issuers_bool_exp
+  _or: [voucher_issuers_bool_exp!]
+  account: accounts_bool_exp
+  active: Boolean_comparison_exp
+  backer: Int_comparison_exp
+  created_at: timestamp_comparison_exp
+  id: Int_comparison_exp
+  voucher: Int_comparison_exp
+  voucherByVoucher: vouchers_bool_exp
+}
+
+"""
+unique or primary key constraints on table "voucher_issuers"
+"""
+enum voucher_issuers_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  voucher_backers_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "voucher_issuers"
+"""
+input voucher_issuers_inc_input {
+  backer: Int
+  voucher: Int
+}
+
+"""
+input type for inserting data into table "voucher_issuers"
+"""
+input voucher_issuers_insert_input {
+  account: accounts_obj_rel_insert_input
+  active: Boolean
+  backer: Int
+  created_at: timestamp
+  voucher: Int
+  voucherByVoucher: vouchers_obj_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type voucher_issuers_max_fields {
+  backer: Int
+  created_at: timestamp
+  id: Int
+  voucher: Int
+}
+
+"""
+order by max() on columns of table "voucher_issuers"
+"""
+input voucher_issuers_max_order_by {
+  backer: order_by
+  created_at: order_by
+  id: order_by
+  voucher: order_by
+}
+
+"""aggregate min on columns"""
+type voucher_issuers_min_fields {
+  backer: Int
+  created_at: timestamp
+  id: Int
+  voucher: Int
+}
+
+"""
+order by min() on columns of table "voucher_issuers"
+"""
+input voucher_issuers_min_order_by {
+  backer: order_by
+  created_at: order_by
+  id: order_by
+  voucher: order_by
+}
+
+"""
+response of any mutation on the table "voucher_issuers"
+"""
+type voucher_issuers_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [voucher_issuers!]!
+}
+
+"""
+on_conflict condition type for table "voucher_issuers"
+"""
+input voucher_issuers_on_conflict {
+  constraint: voucher_issuers_constraint!
+  update_columns: [voucher_issuers_update_column!]! = []
+  where: voucher_issuers_bool_exp
+}
+
+"""Ordering options when selecting data from "voucher_issuers"."""
+input voucher_issuers_order_by {
+  account: accounts_order_by
+  active: order_by
+  backer: order_by
+  created_at: order_by
+  id: order_by
+  voucher: order_by
+  voucherByVoucher: vouchers_order_by
+}
+
+"""primary key columns input for table: voucher_issuers"""
+input voucher_issuers_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "voucher_issuers"
+"""
+enum voucher_issuers_select_column {
+  """column name"""
+  active
+
+  """column name"""
+  backer
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  voucher
+}
+
+"""
+select "voucher_issuers_aggregate_bool_exp_bool_and_arguments_columns" columns of table "voucher_issuers"
+"""
+enum voucher_issuers_select_column_voucher_issuers_aggregate_bool_exp_bool_and_arguments_columns {
+  """column name"""
+  active
+}
+
+"""
+select "voucher_issuers_aggregate_bool_exp_bool_or_arguments_columns" columns of table "voucher_issuers"
+"""
+enum voucher_issuers_select_column_voucher_issuers_aggregate_bool_exp_bool_or_arguments_columns {
+  """column name"""
+  active
+}
+
+"""
+input type for updating data in table "voucher_issuers"
+"""
+input voucher_issuers_set_input {
+  active: Boolean
+  backer: Int
+  created_at: timestamp
+  voucher: Int
+}
+
+"""aggregate stddev on columns"""
+type voucher_issuers_stddev_fields {
+  backer: Float
+  id: Float
+  voucher: Float
+}
+
+"""
+order by stddev() on columns of table "voucher_issuers"
+"""
+input voucher_issuers_stddev_order_by {
+  backer: order_by
+  id: order_by
+  voucher: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type voucher_issuers_stddev_pop_fields {
+  backer: Float
+  id: Float
+  voucher: Float
+}
+
+"""
+order by stddev_pop() on columns of table "voucher_issuers"
+"""
+input voucher_issuers_stddev_pop_order_by {
+  backer: order_by
+  id: order_by
+  voucher: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type voucher_issuers_stddev_samp_fields {
+  backer: Float
+  id: Float
+  voucher: Float
+}
+
+"""
+order by stddev_samp() on columns of table "voucher_issuers"
+"""
+input voucher_issuers_stddev_samp_order_by {
+  backer: order_by
+  id: order_by
+  voucher: order_by
+}
+
+"""
+Streaming cursor of the table "voucher_issuers"
+"""
+input voucher_issuers_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: voucher_issuers_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input voucher_issuers_stream_cursor_value_input {
+  active: Boolean
+  backer: Int
+  created_at: timestamp
+  id: Int
+  voucher: Int
+}
+
+"""aggregate sum on columns"""
+type voucher_issuers_sum_fields {
+  backer: Int
+  id: Int
+  voucher: Int
+}
+
+"""
+order by sum() on columns of table "voucher_issuers"
+"""
+input voucher_issuers_sum_order_by {
+  backer: order_by
+  id: order_by
+  voucher: order_by
+}
+
+"""
+update columns of table "voucher_issuers"
+"""
+enum voucher_issuers_update_column {
+  """column name"""
+  active
+
+  """column name"""
+  backer
+
+  """column name"""
+  created_at
+
+  """column name"""
+  voucher
+}
+
+input voucher_issuers_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: voucher_issuers_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: voucher_issuers_set_input
+
+  """filter the rows which have to be updated"""
+  where: voucher_issuers_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type voucher_issuers_var_pop_fields {
+  backer: Float
+  id: Float
+  voucher: Float
+}
+
+"""
+order by var_pop() on columns of table "voucher_issuers"
+"""
+input voucher_issuers_var_pop_order_by {
+  backer: order_by
+  id: order_by
+  voucher: order_by
+}
+
+"""aggregate var_samp on columns"""
+type voucher_issuers_var_samp_fields {
+  backer: Float
+  id: Float
+  voucher: Float
+}
+
+"""
+order by var_samp() on columns of table "voucher_issuers"
+"""
+input voucher_issuers_var_samp_order_by {
+  backer: order_by
+  id: order_by
+  voucher: order_by
+}
+
+"""aggregate variance on columns"""
+type voucher_issuers_variance_fields {
+  backer: Float
+  id: Float
+  voucher: Float
+}
+
+"""
+order by variance() on columns of table "voucher_issuers"
+"""
+input voucher_issuers_variance_order_by {
+  backer: order_by
+  id: order_by
+  voucher: order_by
+}
+
+"""
 columns and relationships of "vouchers"
 """
 type vouchers {
@@ -9850,6 +9874,7 @@ type vouchers {
   geo: point
   id: Int!
   location_name: String
+  radius: Int
 
   """An array relationship"""
   service_accepted_payments(
@@ -9930,7 +9955,7 @@ type vouchers {
   """An array relationship"""
   voucher_backers(
     """distinct select on columns"""
-    distinct_on: [voucher_backers_select_column!]
+    distinct_on: [voucher_issuers_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -9939,16 +9964,16 @@ type vouchers {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [voucher_backers_order_by!]
+    order_by: [voucher_issuers_order_by!]
 
     """filter the rows returned"""
-    where: voucher_backers_bool_exp
-  ): [voucher_backers!]!
+    where: voucher_issuers_bool_exp
+  ): [voucher_issuers!]!
 
   """An aggregate relationship"""
   voucher_backers_aggregate(
     """distinct select on columns"""
-    distinct_on: [voucher_backers_select_column!]
+    distinct_on: [voucher_issuers_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -9957,11 +9982,11 @@ type vouchers {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [voucher_backers_order_by!]
+    order_by: [voucher_issuers_order_by!]
 
     """filter the rows returned"""
-    where: voucher_backers_bool_exp
-  ): voucher_backers_aggregate!
+    where: voucher_issuers_bool_exp
+  ): voucher_issuers_aggregate!
 
   """An array relationship"""
   voucher_certifications(
@@ -10031,6 +10056,7 @@ type vouchers_aggregate_fields {
 type vouchers_avg_fields {
   demurrage_rate: Float
   id: Float
+  radius: Float
   supply: Float
 }
 
@@ -10047,6 +10073,7 @@ input vouchers_bool_exp {
   geo: point_comparison_exp
   id: Int_comparison_exp
   location_name: String_comparison_exp
+  radius: Int_comparison_exp
   service_accepted_payments: service_accepted_payment_bool_exp
   service_accepted_payments_aggregate: service_accepted_payment_aggregate_bool_exp
   sink_address: String_comparison_exp
@@ -10055,8 +10082,8 @@ input vouchers_bool_exp {
   transactions: transactions_bool_exp
   transactions_aggregate: transactions_aggregate_bool_exp
   voucher_address: String_comparison_exp
-  voucher_backers: voucher_backers_bool_exp
-  voucher_backers_aggregate: voucher_backers_aggregate_bool_exp
+  voucher_backers: voucher_issuers_bool_exp
+  voucher_backers_aggregate: voucher_issuers_aggregate_bool_exp
   voucher_certifications: voucher_certifications_bool_exp
   voucher_certifications_aggregate: voucher_certifications_aggregate_bool_exp
   voucher_description: String_comparison_exp
@@ -10083,6 +10110,7 @@ input type for incrementing numeric columns in table "vouchers"
 """
 input vouchers_inc_input {
   demurrage_rate: numeric
+  radius: Int
   supply: Int
 }
 
@@ -10095,13 +10123,14 @@ input vouchers_insert_input {
   demurrage_rate: numeric
   geo: point
   location_name: String
+  radius: Int
   service_accepted_payments: service_accepted_payment_arr_rel_insert_input
   sink_address: String
   supply: Int
   symbol: String
   transactions: transactions_arr_rel_insert_input
   voucher_address: String
-  voucher_backers: voucher_backers_arr_rel_insert_input
+  voucher_backers: voucher_issuers_arr_rel_insert_input
   voucher_certifications: voucher_certifications_arr_rel_insert_input
   voucher_description: String
   voucher_name: String
@@ -10113,6 +10142,7 @@ type vouchers_max_fields {
   demurrage_rate: numeric
   id: Int
   location_name: String
+  radius: Int
   sink_address: String
   supply: Int
   symbol: String
@@ -10127,6 +10157,7 @@ type vouchers_min_fields {
   demurrage_rate: numeric
   id: Int
   location_name: String
+  radius: Int
   sink_address: String
   supply: Int
   symbol: String
@@ -10173,13 +10204,14 @@ input vouchers_order_by {
   geo: order_by
   id: order_by
   location_name: order_by
+  radius: order_by
   service_accepted_payments_aggregate: service_accepted_payment_aggregate_order_by
   sink_address: order_by
   supply: order_by
   symbol: order_by
   transactions_aggregate: transactions_aggregate_order_by
   voucher_address: order_by
-  voucher_backers_aggregate: voucher_backers_aggregate_order_by
+  voucher_backers_aggregate: voucher_issuers_aggregate_order_by
   voucher_certifications_aggregate: voucher_certifications_aggregate_order_by
   voucher_description: order_by
   voucher_name: order_by
@@ -10213,6 +10245,9 @@ enum vouchers_select_column {
   location_name
 
   """column name"""
+  radius
+
+  """column name"""
   sink_address
 
   """column name"""
@@ -10240,6 +10275,7 @@ input vouchers_set_input {
   demurrage_rate: numeric
   geo: point
   location_name: String
+  radius: Int
   sink_address: String
   supply: Int
   symbol: String
@@ -10252,6 +10288,7 @@ input vouchers_set_input {
 type vouchers_stddev_fields {
   demurrage_rate: Float
   id: Float
+  radius: Float
   supply: Float
 }
 
@@ -10259,6 +10296,7 @@ type vouchers_stddev_fields {
 type vouchers_stddev_pop_fields {
   demurrage_rate: Float
   id: Float
+  radius: Float
   supply: Float
 }
 
@@ -10266,6 +10304,7 @@ type vouchers_stddev_pop_fields {
 type vouchers_stddev_samp_fields {
   demurrage_rate: Float
   id: Float
+  radius: Float
   supply: Float
 }
 
@@ -10288,6 +10327,7 @@ input vouchers_stream_cursor_value_input {
   geo: point
   id: Int
   location_name: String
+  radius: Int
   sink_address: String
   supply: Int
   symbol: String
@@ -10300,6 +10340,7 @@ input vouchers_stream_cursor_value_input {
 type vouchers_sum_fields {
   demurrage_rate: numeric
   id: Int
+  radius: Int
   supply: Int
 }
 
@@ -10321,6 +10362,9 @@ enum vouchers_update_column {
 
   """column name"""
   location_name
+
+  """column name"""
+  radius
 
   """column name"""
   sink_address
@@ -10356,6 +10400,7 @@ input vouchers_updates {
 type vouchers_var_pop_fields {
   demurrage_rate: Float
   id: Float
+  radius: Float
   supply: Float
 }
 
@@ -10363,6 +10408,7 @@ type vouchers_var_pop_fields {
 type vouchers_var_samp_fields {
   demurrage_rate: Float
   id: Float
+  radius: Float
   supply: Float
 }
 
@@ -10370,6 +10416,7 @@ type vouchers_var_samp_fields {
 type vouchers_variance_fields {
   demurrage_rate: Float
   id: Float
+  radius: Float
   supply: Float
 }
 

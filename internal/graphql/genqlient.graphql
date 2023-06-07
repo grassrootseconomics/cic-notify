@@ -8,6 +8,7 @@ query PrepareMessagePayload($fromAddress: String!, $toAddress: String!, $voucher
       personal_information {
         family_name
         given_names
+        language_code
       }
     }
   }
@@ -20,6 +21,7 @@ query PrepareMessagePayload($fromAddress: String!, $toAddress: String!, $voucher
       personal_information {
         family_name
         given_names
+        language_code
       }
     }
   }

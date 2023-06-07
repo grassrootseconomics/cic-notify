@@ -22,6 +22,9 @@ webhook_secret = "replacewitharandomlongstring"
 [tg]
 bot_token = ""
 
+[push]
+disable = false
+
 [hasura]
 admin_secret = ""
 endpoint     = ""

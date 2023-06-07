@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 
 	"github.com/grassrootseconomics/cic-notify/internal/graphql"
+	"github.com/grassrootseconomics/cic-notify/internal/locale"
 	"github.com/grassrootseconomics/cic-notify/internal/notify"
-	"github.com/grassrootseconomics/cic-notify/internal/template"
 	"github.com/hibiken/asynq"
 )
 
@@ -15,6 +15,7 @@ type failedMsg struct {
 	// These are passed to the channel provider e.g. AfricasTalking, Telegram, e.t.c.
 	ChannelType       graphql.Interface_type_enum
 	ChannelIdentifier string
+	Language          string
 }
 
 func FailedMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) error {
@@ -33,13 +34,11 @@ func FailedMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) err
 			FailReason: payload.FailReason,
 		}
 
-		msgPayload, err := n.TxNotifyTemplates.Prepare(
-			template.FailedTemeplate,
+		msgPayload := n.Templates.PrepareLocale(
+			locale.FailedTemeplate,
+			"eng",
 			templatePayload,
 		)
-		if err != nil {
-			return err
-		}
 
 		if err := routeMessage(
 			ctx,

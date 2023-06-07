@@ -60,6 +60,7 @@ func main() {
 		AtSandbox:         ko.Bool("at.sandbox"),
 		AtShortCode:       ko.String("at.short_code"),
 		CeloProvider:      celoProvider,
+		DisablePush:       ko.Bool("push.disable"),
 		HasuraAdminSecret: ko.MustString("hasura.admin_secret"),
 		HasuraEndpoint:    ko.MustString("hasura.endpoint"),
 		Logg:              lo,
