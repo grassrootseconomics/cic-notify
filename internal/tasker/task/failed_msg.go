@@ -36,7 +36,7 @@ func FailedMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) err
 
 		msgPayload := n.Templates.PrepareLocale(
 			locale.FailedTemeplate,
-			"eng",
+			payload.Language,
 			templatePayload,
 		)
 

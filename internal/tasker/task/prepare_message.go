@@ -64,7 +64,7 @@ func PrepareMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) er
 			n.Logg.Warn("prepare_msg_processor: on-chain failed transfer", "tx_hash", payload.TxHash, "payload", t.Payload())
 			if len(resp.Sender) > 0 {
 				failedMsgJobPayload, err := json.Marshal(failedMsg{
-					FailReason:        "Tx failed on chain",
+					FailReason:        "REVERT",
 					ChannelType:       resp.Sender[0].User.Interface_type,
 					ChannelIdentifier: resp.Sender[0].User.Interface_identifier,
 					Language:          resp.Sender[0].User.Personal_information.Language_code,
