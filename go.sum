@@ -267,10 +267,10 @@ github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/ad
 github.com/graph-gophers/graphql-go v1.3.0/go.mod h1:9CQHMSxwO4MprSdzoIEobiHpoLtHm77vfxsvsIN5Vuc=
 github.com/grassrootseconomics/asynq v0.25.0 h1:2zSz5YwNLu/oCTm/xfNixn86i9aw4zth9Dl0dc2kFEs=
 github.com/grassrootseconomics/asynq v0.25.0/go.mod h1:pe2XOdK1eIbTgTmRFHIYl75lvVuTPJxZq2T9Ocz/+2s=
-github.com/grassrootseconomics/celoutils v1.3.0 h1:0NTdYh0jboGlVnfML7fbgWLjrC0jA+F1J/Ze01IkNlY=
-github.com/grassrootseconomics/celoutils v1.3.0/go.mod h1:Uo5YRy6AGLAHDZj9jaOI+AWoQ1H3L0v79728pPMkm9Q=
-github.com/grassrootseconomics/cic-custodial v0.6.2-alpha h1:g1cvXNkZ0aOgu4RUG3Hx7qk8gTqnl2QWGjbQEHChSKc=
-github.com/grassrootseconomics/cic-custodial v0.6.2-alpha/go.mod h1:+JJ4obLzP/TLOZMoUiqLPlvYZ501CFWYXJL+Wbsv2us=
+github.com/grassrootseconomics/celoutils v1.4.0 h1:AJNKiOpfnQqZ3kRxeUlhWH/zlDDjhtbs/OzAMb5zU4A=
+github.com/grassrootseconomics/celoutils v1.4.0/go.mod h1:Uo5YRy6AGLAHDZj9jaOI+AWoQ1H3L0v79728pPMkm9Q=
+github.com/grassrootseconomics/cic-custodial v0.6.3-alpha h1:1S2pKpRwd/vrr65RO6AsPS/FBS6h4+CEJRg+euYTzGc=
+github.com/grassrootseconomics/cic-custodial v0.6.3-alpha/go.mod h1:1QFaS6Gh1/QupS/yphyiGrMeL72dkOMAZAWg5Qmhk94=
 github.com/grassrootseconomics/w3-celo-patch v0.2.0 h1:YqibbPzX0tQKmxU1nUGzThPKk/fiYeYZY6Aif3eyu8U=
 github.com/grassrootseconomics/w3-celo-patch v0.2.0/go.mod h1:WhBXNzNIvHmS6B2hAeShs56oa9Azb4jQSrOMKuMdBWw=
 github.com/hashicorp/go-bexpr v0.1.10/go.mod h1:oxlubA2vC/gFVfX1A6JGp7ls7uCDlfJn732ehYYg+g0=
