@@ -8,7 +8,7 @@ require (
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/golang-module/carbon/v2 v2.2.3
 	github.com/google/uuid v1.3.0
-	github.com/grassrootseconomics/celoutils v1.3.0
+	github.com/grassrootseconomics/celoutils v1.4.0
 	github.com/grassrootseconomics/cic-custodial v0.6.2-alpha
 	github.com/grassrootseconomics/w3-celo-patch v0.2.0
 	github.com/hibiken/asynq v0.24.0
