@@ -18,8 +18,22 @@ const (
 	SuccessSentTemplate     TemplateType = "successSent"
 )
 
+var (
+	// langCode provides a mapping between ISO XX language codes and the i18n templater.
+	langCode = map[string]string{
+		"swa": "sw-KE",
+		"eng": "en-US",
+		"fra": "fr-FR",
+		"kam": "kam-KE",
+		"kik": "kik-KE",
+		"luo": "luo-KE",
+		"mij": "mij-KE",
+		"gax": "gax-KE",
+	}
+)
+
 func InitTemplates() (*Templates, error) {
-	i18N, err := i18n.New(i18n.KV(localeMap), "en-US", "sw-KE")
+	i18N, err := i18n.New(i18n.KV(localeMap))
 	if err != nil {
 		return nil, err
 	}
