@@ -3,6 +3,7 @@ package task
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/grassrootseconomics/cic-notify/internal/notify"
@@ -38,6 +39,10 @@ func AtPushProcessor(n *notify.Notify) func(context.Context, *asynq.Task) error 
 
 		atResponse, err := n.AtClient.SendBulkSMS(ctx, msg)
 		if err != nil {
+			if errors.Is(err, context.DeadlineExceeded) {
+				return err
+			}
+
 			return fmt.Errorf("AT push failed: %v: %w", err, asynq.SkipRetry)
 		}
 		n.Logg.Info("at_push_processor: AT push successful", "payload", payload.Message, "sent_to", payload.RecepientPhone, "message_id", atResponse.SMSMessageData.Recipients[0].MessageID)
