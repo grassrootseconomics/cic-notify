@@ -339,6 +339,8 @@ github.com/jung-kurt/gofpdf v1.0.3-0.20190309125859-24315acbbda5/go.mod h1:7Id9E
 github.com/jwilder/encoding v0.0.0-20170811194829-b4e1701a28ef/go.mod h1:Ct9fl0F6iIOGgxJ5npU/IUOhOhqlVrGjyIZc8/MagT0=
 github.com/kamikazechaser/africastalking v0.2.0 h1:C6d+uircbTs6vudtlrKsMgCJMOMA5N5z1bnnY7whB4Y=
 github.com/kamikazechaser/africastalking v0.2.0/go.mod h1:hgKqb7Zl080ay0BzCBI25iqnoK2ac1tWYPfquXODGwc=
+github.com/kamikazechaser/africastalking v0.2.1 h1:PaO0kSbU1mZAae0M+NbSnOEeMUN17XwjoYwMCTjkGes=
+github.com/kamikazechaser/africastalking v0.2.1/go.mod h1:hgKqb7Zl080ay0BzCBI25iqnoK2ac1tWYPfquXODGwc=
 github.com/karalabe/usb v0.0.0-20190919080040-51dc0efba356/go.mod h1:Od972xHfMJowv7NGVDiWVxk2zxnWgjLlJzE+F4F7AGU=
 github.com/kataras/i18n v0.0.8 h1:thiDRqq4fN2sQOK5CwR5Yh1yT7swP6B3wnadILhqjhk=
 github.com/kataras/i18n v0.0.8/go.mod h1:M/yRAqQ3Y7z2oSpotxG/+nPrgsJLas6t0kEJfIJk98E=

@@ -14,7 +14,7 @@ require (
 	github.com/hibiken/asynq v0.24.0
 	github.com/jackc/pgx/v5 v5.3.1
 	github.com/jackc/tern/v2 v2.1.0
-	github.com/kamikazechaser/africastalking v0.2.0
+	github.com/kamikazechaser/africastalking v0.2.1
 	github.com/kataras/i18n v0.0.8
 	github.com/knadh/goyesql/v2 v2.2.0
 	github.com/knadh/koanf/parsers/toml v0.1.0

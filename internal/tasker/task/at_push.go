@@ -3,8 +3,8 @@ package task
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
+	"os"
 
 	"github.com/grassrootseconomics/cic-notify/internal/notify"
 	"github.com/hibiken/asynq"
@@ -39,7 +39,7 @@ func AtPushProcessor(n *notify.Notify) func(context.Context, *asynq.Task) error 
 
 		atResponse, err := n.AtClient.SendBulkSMS(ctx, msg)
 		if err != nil {
-			if errors.Is(err, context.DeadlineExceeded) {
+			if os.IsTimeout(err) {
 				return err
 			}
 
