@@ -22,7 +22,7 @@ require (
 	github.com/knadh/koanf/providers/file v0.1.0
 	github.com/knadh/koanf/v2 v2.0.1
 	github.com/labstack/echo/v4 v4.10.2
-	github.com/nats-io/nats.go v1.26.0
+	github.com/nats-io/nats.go v1.27.1
 	github.com/redis/go-redis/v9 v9.0.4
 	github.com/zerodha/logf v0.5.5
 )
