@@ -12,7 +12,7 @@ require (
 	github.com/grassrootseconomics/cic-custodial v0.6.2-alpha
 	github.com/grassrootseconomics/w3-celo-patch v0.2.0
 	github.com/hibiken/asynq v0.24.0
-	github.com/jackc/pgx/v5 v5.3.1
+	github.com/jackc/pgx/v5 v5.4.3
 	github.com/jackc/tern/v2 v2.1.0
 	github.com/kamikazechaser/africastalking v0.2.1
 	github.com/kataras/i18n v0.0.8
@@ -68,7 +68,7 @@ require (
 	github.com/imdario/mergo v0.3.13 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
-	github.com/jackc/puddle/v2 v2.2.0 // indirect
+	github.com/jackc/puddle/v2 v2.2.1 // indirect
 	github.com/jackpal/go-nat-pmp v1.0.2 // indirect
 	github.com/klauspost/compress v1.16.5 // indirect
 	github.com/knadh/koanf/maps v0.1.1 // indirect
@@ -103,9 +103,9 @@ require (
 	github.com/valyala/histogram v1.2.0 // indirect
 	github.com/vektah/gqlparser/v2 v2.5.1 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
-	golang.org/x/crypto v0.8.0 // indirect
+	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/mod v0.10.0 // indirect
-	golang.org/x/net v0.9.0 // indirect
+	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
