@@ -38,7 +38,6 @@ require (
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/alexflint/go-arg v1.4.2 // indirect
 	github.com/alexflint/go-scalar v1.0.0 // indirect
-	github.com/btcsuite/btcd v0.20.1-beta // indirect
 	github.com/celo-org/celo-blockchain v1.7.2 // indirect
 	github.com/celo-org/celo-bls-go v0.6.4 // indirect
 	github.com/celo-org/celo-bls-go-android v0.6.3 // indirect
