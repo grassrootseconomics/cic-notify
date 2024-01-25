@@ -27,15 +27,21 @@ func Test_Templates_PrepareLocale(t *testing.T) {
 		1100,
 	}
 
-	expectedReceived := "1234XXX Confirmed received 1000 SRF from Sohail 0722000000 23/4/23 at 10:09 AM Balance 1100 SRF"
-	result := tmpl.PrepareLocale(SuccessReceivedTemplate, "eng", receivedPayload)
+	expectedReceived := "1234XXX Confirmed 1000 SRF received from Sohail 0722000000 23/4/23 at 10:09 AM Balance 1100 SRF"
+	result, err := tmpl.PrepareLocale(SuccessReceivedTemplate, "eng", receivedPayload)
+	if err != nil {
+		t.Error(err)
+	}
 	if result != expectedReceived {
 		t.Errorf("Expected '%s', but got '%s'", expectedReceived, result)
 	}
 
 	// Test sw-KE sample template
 	expectedReceivedSw := "1234XXX Limekubalika umepokea 1000 SRF kutoka kwa Sohail 0722000000 23/4/23 at 10:09 AM Salio 1100 SRF"
-	resultSw := tmpl.PrepareLocale(SuccessReceivedTemplate, "swa", receivedPayload)
+	resultSw, err := tmpl.PrepareLocale(SuccessReceivedTemplate, "swa", receivedPayload)
+	if err != nil {
+		t.Error(err)
+	}
 	if resultSw != expectedReceivedSw {
 		t.Errorf("Expected '%s', but got '%s'", expectedReceivedSw, resultSw)
 	}
@@ -57,7 +63,10 @@ func Test_Templates_PrepareLocale(t *testing.T) {
 		900,
 	}
 	expectedSent := "5555XXX Confirmed 1000 SRF sent to Sohail 0722000000 24/4/23 at 10:09 AM Balance 900 SRF"
-	result = tmpl.PrepareLocale(SuccessSentTemplate, "eng", sentPayload)
+	result, err = tmpl.PrepareLocale(SuccessSentTemplate, "eng", sentPayload)
+	if err != nil {
+		t.Error(err)
+	}
 	if result != expectedSent {
 		t.Errorf("Expected '%s', but got '%s'", expectedSent, result)
 	}
@@ -65,7 +74,10 @@ func Test_Templates_PrepareLocale(t *testing.T) {
 	// Test successful preparation of FailedTemeplate
 	payload := struct{ FailReason string }{"insufficient funds"}
 	expected := "Transaction failed. insufficient funds"
-	result = tmpl.PrepareLocale(FailedTemeplate, "eng", payload)
+	result, err = tmpl.PrepareLocale(FailedTemeplate, "eng", payload)
+	if err != nil {
+		t.Error(err)
+	}
 	if result != expected {
 		t.Errorf("Expected '%s', but got '%s'", expected, result)
 	}

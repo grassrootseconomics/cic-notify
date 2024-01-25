@@ -66,11 +66,14 @@ func SuccessReceivedMsgProcessor(n *notify.Notify) func(context.Context, *asynq.
 			truncateVoucherValue(balance.Uint64()),
 		}
 
-		msgPayload := n.Templates.PrepareLocale(
+		msgPayload, err := n.Templates.PrepareLocale(
 			locale.SuccessReceivedTemplate,
 			payload.Language,
 			templatePayload,
 		)
+		if err != nil {
+			return err
+		}
 
 		if err := routeMessage(
 			ctx,

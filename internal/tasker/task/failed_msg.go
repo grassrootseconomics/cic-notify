@@ -34,11 +34,14 @@ func FailedMsgProcessor(n *notify.Notify) func(context.Context, *asynq.Task) err
 			FailReason: payload.FailReason,
 		}
 
-		msgPayload := n.Templates.PrepareLocale(
+		msgPayload, err := n.Templates.PrepareLocale(
 			locale.FailedTemeplate,
 			payload.Language,
 			templatePayload,
 		)
+		if err != nil {
+			return err
+		}
 
 		if err := routeMessage(
 			ctx,
