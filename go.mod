@@ -12,8 +12,8 @@ require (
 	github.com/grassrootseconomics/cic-custodial v0.6.2-alpha
 	github.com/grassrootseconomics/w3-celo-patch v0.2.0
 	github.com/hibiken/asynq v0.24.0
-	github.com/jackc/pgx/v5 v5.3.1
-	github.com/jackc/tern/v2 v2.1.0
+	github.com/jackc/pgx/v5 v5.4.0
+	github.com/jackc/tern/v2 v2.1.1
 	github.com/kamikazechaser/africastalking v1.0.0
 	github.com/kamikazechaser/locale v0.1.0
 	github.com/knadh/goyesql/v2 v2.2.0
