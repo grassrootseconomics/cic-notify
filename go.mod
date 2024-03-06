@@ -6,7 +6,7 @@ require (
 	github.com/Khan/genqlient v0.6.0
 	github.com/VictoriaMetrics/metrics v1.24.0
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
-	github.com/golang-module/carbon/v2 v2.2.3
+	github.com/golang-module/carbon/v2 v2.3.10
 	github.com/google/uuid v1.3.0
 	github.com/grassrootseconomics/celoutils v1.4.0
 	github.com/grassrootseconomics/cic-custodial v0.6.2-alpha
